@@ -3,8 +3,23 @@
   src: url('../thaiFonts/THSarabunNew.ttf');
 }
 
+@font-face {
+  font-family: 'THSarabunNewBold';
+  src: url('../thaiFonts/THSarabunNewBold.ttf');
+}
+
 .regular-th {
   font-family: 'THSarabunNew', 'THSarabunNew';
+  font-size: 20px;
+}
+
+.bold-th {
+  font-family: 'THSarabunNewBold', 'THSarabunNewBold';
+  font-size: 20px;
+}
+
+.kanit-th {
+  font-family: 'Kanit', sans-serif;
   font-size: 20px;
 }
 
@@ -197,3 +212,5 @@
   outline: none;
   display: none;
 }
+
+

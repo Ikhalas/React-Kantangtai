@@ -60,8 +60,8 @@ var routes = [
   {
     pro: true,
     path: "/upgrade",
-    name: "Upgrade to PRO",
-    icon: "nc-icon nc-spaceship",
+    name: "ออกจากระบบ",
+    icon: "nc-icon nc-user-run",
     component: UpgradeToPro,
     layout: "/admin"
   }
