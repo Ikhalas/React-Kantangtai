@@ -68,7 +68,7 @@ a:hover {
 }
 
 #main {
-	background-color: #f4f3ef;
+	background-color: #fff;
 	padding-top: 150px;
   min-height:500px;
 }
@@ -97,7 +97,7 @@ section p:last-child {
 }
 
 section.color {
-	background-color: #fff;
+	background-color: #f4f3ef;
 }
 
 header {
