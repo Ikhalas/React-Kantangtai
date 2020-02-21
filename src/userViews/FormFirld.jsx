@@ -4,6 +4,7 @@ import { db } from '../assets/config/firebase'
 import Modal from 'react-modal';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import InputMask from 'react-input-mask'
+import Loader from 'react-loader-spinner'
 
 import {
     Button,
@@ -44,10 +45,21 @@ const modalStyles = {
     },
 };
 
+const spinner = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+}
+
+
 class FormFirld extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            requests: [],
             name: '',
             lastname: '',
             id: '',
@@ -66,8 +78,10 @@ class FormFirld extends React.Component {
             idCheck: '',
             telCheck: '',
             modalIsOpen: false,
-            uploadIsComplete : false
         }
+        this._isMounted = false
+        this._isLoaded = 'no'
+
         this.currentPosition = { lat: 7.3563906, lng: 99.5197931 }
         this.scrollDiv = createRef();
         this.newValue = ''
@@ -75,6 +89,24 @@ class FormFirld extends React.Component {
         this.closeModal = this.closeModal.bind(this)
         this.openModal = this.openModal.bind(this)
     }
+
+    componentDidMount() {
+        this._isMounted = true
+        this._isMounted && this.getData();
+    }
+
+    getData() {
+        db.collection('requests').get().then(snapshot => {
+            let requests = []
+            snapshot.forEach(doc => {
+                //let data = doc.data()
+                requests.push(doc)
+            })
+            this._isMounted && this.setState({ requests })
+            //console.log("requests |" + this.state.requests.length)
+        }).catch(error => console.log(error))
+    }
+
     componentWillMount() {
         Modal.setAppElement('body');
     }
@@ -110,6 +142,7 @@ class FormFirld extends React.Component {
 
 
         this.newValue = {
+            "No": Number(this.state.requests.length) + 1,
             "name": this.state.name,
             "lastname": this.state.lastname,
             "id": this.state.id,
@@ -120,7 +153,8 @@ class FormFirld extends React.Component {
             "lat": this.currentPosition.lat,
             "lng": this.currentPosition.lng,
             "date": this.getCurrentDate(),
-            "note": this.state.note
+            "note": this.state.note,
+            "status": false
         }
 
         //console.log(this.state.nameCheck)
@@ -141,12 +175,21 @@ class FormFirld extends React.Component {
     }
 
     addToDatabase(newValue) {
-        db.collection('requests').add(newValue).then(() => {
-            //console.log("add item complete !!")
-            document.getElementById("form").reset();
-            this.setState({ modalIsOpen: false });
-            window.scrollTo(0, 0)
-        })
+        this._isLoaded = 'loading'
+        //console.log(this._isLoaded)
+        if (this._isLoaded === 'loading') {
+            db.collection('requests').add(newValue).then(() => {
+                //console.log("add item complete !!")
+                document.body.style.overflow = 'unset';
+                //document.getElementById("form").reset();
+                this.setState({ modalIsOpen: false });
+                this._isLoaded = 'complete'
+                window.location.reload();
+            })
+        } else {
+            //console.log('shit')
+        }
+
     }
 
     getCurrentDate() {
@@ -251,6 +294,10 @@ class FormFirld extends React.Component {
     closeModal() {
         this.setState({ modalIsOpen: false });
         document.body.style.overflow = 'unset';
+    }
+
+    componentWillUnmount() {  //cancel subscriptions and asynchronous tasks
+        this._isMounted = false;
     }
 
     render() {
@@ -475,7 +522,7 @@ class FormFirld extends React.Component {
                                             <div style={{ marginTop: "510px" }}>
                                                 <p >ตำแหน่ง : [ {this.currentPosition.lat + " " + this.currentPosition.lng} ]</p>
                                             </div>
-                                            
+
                                         </Col>
                                     </Row>
                                 }
@@ -520,30 +567,44 @@ class FormFirld extends React.Component {
                     style={modalStyles}
                     contentLabel="Confirm Modal"
                 >
-                    <div className="box-header with-border regular-th" style={{ width: "600px" }}>
+                    {this._isLoaded === 'loading' ?
+                        <div style={spinner}>
+                            <Loader
+                                type="Oval"
+                                color="#2f9e00"
+                                height={150}
+                                width={150}
+                            />
+                        </div>
+                        : null
+                     }
+
+                    <div className="box-header with-border regular-th">
                         <p style={{ fontSize: "35px", color: "black" }}><b>ยืนยันคำขอ</b></p>
                     </div>
                     <div className="box-body regular-th">
                         <div style={{ backgroundColor: "#ebfbe7", padding: '8px 10px 8px 20px' }}>
                             <i className="icon fa fa-warning"></i>&nbsp;&nbsp;
                             <span style={{ fontSize: "20px" }}>
-                                <b>การดำเนินการนี้จะยืนยันการขอรับ&nbsp;
+                                <b>ยืนยันการขอรับ&nbsp;
                                 <span style={{ fontSize: "25px" }}>'น้ำสะอาดเพื่ออุปโภคบริโภค'</span>
                                 </b>
                             </span>
                         </div>
+                        <br />
+                        คำขอลำดับที่ : <b style={{ fontSize: "25px" }}>{Number(this.state.requests.length) + 1}</b>
                         <br />
                         ชื่อ-นามสกุล : <b style={{ fontSize: "25px" }}>{this.state.name}&nbsp;&nbsp;{this.state.lastname}</b>
                         <br />
                         ที่อยู่ : <b style={{ fontSize: "25px" }}>{this.state.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
                         <br /><br />
                         <Row>
-                            <Col md="7">
-                                <p style={{ fontSize: '17px' }}>รอการติดต่อกลับจากเจ้าหน้าที่ภายใน 3-4 วัน<br />หรือต่อต่อ&nbsp;075-204-625</p>
+                            <Col md="6">
+                                <p style={{ fontSize: '17px' }}>รอการประสานงานจากเจ้าหน้าที่ภายใน 3-4 วัน</p>
                             </Col>
-                            <Col md="5">
+                            <Col md="6" style={{ textAlign: "end" }}>
                                 <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeModal}>
-                                    <span style={{ fontSize: '25px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
+                                    <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
                                 </Button>
                                 &nbsp;&nbsp;
                                 <Button
@@ -551,7 +612,7 @@ class FormFirld extends React.Component {
                                     className="regular-th"
                                     style={{ borderRadius: '12px' }}
                                     onClick={() => { this.addToDatabase(this.newValue) }}>
-                                    <span style={{ fontSize: '25px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
+                                    <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
                                 </Button>
                             </Col>
                         </Row>
