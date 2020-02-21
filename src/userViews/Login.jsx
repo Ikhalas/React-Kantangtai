@@ -1,5 +1,7 @@
 import React from "react";
+import Modal from 'react-modal';
 import { Link, withRouter } from 'react-router-dom';
+
 
 class Login extends React.Component {
     render(){

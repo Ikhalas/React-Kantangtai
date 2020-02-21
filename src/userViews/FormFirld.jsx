@@ -1,8 +1,10 @@
 import React, { createRef } from "react";
 import '../assets/demo/home.css'
-
+import { db } from '../assets/config/firebase'
+import Modal from 'react-modal';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 import InputMask from 'react-input-mask'
+
 import {
     Button,
     Card,
@@ -15,6 +17,32 @@ import {
     Row,
     Col
 } from "reactstrap";
+
+const modalStyles = {
+    content: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#f9f9f9',
+        borderStyle: 'solid',
+        borderWidth: '1px',
+        borderRadius: '25px'
+
+    },
+    overlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: 1000
+    },
+};
 
 class FormFirld extends React.Component {
     constructor(props) {
@@ -36,12 +64,20 @@ class FormFirld extends React.Component {
             lastnameCheck: '',
             addressCheck: '',
             idCheck: '',
-            telCheck: ''
+            telCheck: '',
+            modalIsOpen: false,
+            uploadIsComplete : false
         }
         this.currentPosition = { lat: 7.3563906, lng: 99.5197931 }
         this.scrollDiv = createRef();
-    }
+        this.newValue = ''
 
+        this.closeModal = this.closeModal.bind(this)
+        this.openModal = this.openModal.bind(this)
+    }
+    componentWillMount() {
+        Modal.setAppElement('body');
+    }
 
     onFormSubmit(e) {
         e.preventDefault()
@@ -50,7 +86,6 @@ class FormFirld extends React.Component {
             this.currentPosition.lat = 0
             this.currentPosition.lng = 0
         }
-
         //console.log("id |" + this.state.id.replace(/[_-]/g, '').length)
         //console.log("tel |" + this.state.tel.replace(/[_-]/g, '').length)
         if (this.state.name.length === 0) {
@@ -58,11 +93,11 @@ class FormFirld extends React.Component {
         }
 
         if (this.state.lastname.length === 0) {
-            this.setState({ lastnameCheck: false }) 
+            this.setState({ lastnameCheck: false })
         }
 
         if (this.state.address.length === 0) {
-            this.setState({ addressCheck: false }) 
+            this.setState({ addressCheck: false })
         }
 
         if (this.state.id.length === 0) {
@@ -70,11 +105,11 @@ class FormFirld extends React.Component {
         }
 
         if (this.state.tel.length === 0) {
-            this.setState({ telCheck: false }) 
+            this.setState({ telCheck: false })
         }
 
 
-        const newValue = {
+        this.newValue = {
             "name": this.state.name,
             "lastname": this.state.lastname,
             "id": this.state.id,
@@ -84,23 +119,34 @@ class FormFirld extends React.Component {
             "location": this.state.toggleMap,
             "lat": this.currentPosition.lat,
             "lng": this.currentPosition.lng,
-            "date": this.getCurrentDate()
+            "date": this.getCurrentDate(),
+            "note": this.state.note
         }
 
-        console.log(this.state.nameCheck)
-        console.log(this.state.lastnameCheck)
-        console.log(this.state.addressCheck)
-        console.log(this.state.idCheck)
-        console.log(this.state.telCheck)
+        //console.log(this.state.nameCheck)
+        //console.log(this.state.lastnameCheck)
+        //console.log(this.state.addressCheck)
+        //console.log(this.state.idCheck)
+        //console.log(this.state.telCheck)
 
         if (this.state.nameCheck && this.state.lastnameCheck && this.state.addressCheck && this.state.idCheck && this.state.telCheck) {
-            console.log(newValue)
+            //console.log(this.newValue)
+            this.openModal(e)
+
         }
         else {
-            console.log("shit")
+            //console.log("shit")
             this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
         }
+    }
 
+    addToDatabase(newValue) {
+        db.collection('requests').add(newValue).then(() => {
+            //console.log("add item complete !!")
+            document.getElementById("form").reset();
+            this.setState({ modalIsOpen: false });
+            window.scrollTo(0, 0)
+        })
     }
 
     getCurrentDate() {
@@ -194,7 +240,18 @@ class FormFirld extends React.Component {
             markers[index] = { ...markers[index], position: { lat, lng } };
             return { markers };
         });
-    };
+    }
+
+    openModal = e => {
+        e.preventDefault()
+        this.setState({ modalIsOpen: true });
+        document.body.style.overflow = 'hidden'
+    }
+
+    closeModal() {
+        this.setState({ modalIsOpen: false });
+        document.body.style.overflow = 'unset';
+    }
 
     render() {
         return (
@@ -205,7 +262,7 @@ class FormFirld extends React.Component {
                             <CardTitle tag="h3">แบบฟอร์มขอรับน้ำสะอาดเพื่ออุปโภคและบริโภค</CardTitle>
                         </CardHeader>
                         <CardBody>
-                            <Form onSubmit={this.onFormSubmit.bind(this)}>
+                            <Form onSubmit={this.onFormSubmit.bind(this)} id="form">
                                 <Row>
                                     <Col className="pr-1" md="6" sm="12">
                                         <FormGroup>
@@ -418,6 +475,7 @@ class FormFirld extends React.Component {
                                             <div style={{ marginTop: "510px" }}>
                                                 <p >ตำแหน่ง : [ {this.currentPosition.lat + " " + this.currentPosition.lng} ]</p>
                                             </div>
+                                            
                                         </Col>
                                     </Row>
                                 }
@@ -454,6 +512,51 @@ class FormFirld extends React.Component {
                         </CardBody>
                     </Card>
                 </Col>
+
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    closeTimeoutMS={500}
+                    onRequestClose={this.closeModal}
+                    style={modalStyles}
+                    contentLabel="Confirm Modal"
+                >
+                    <div className="box-header with-border regular-th" style={{ width: "600px" }}>
+                        <p style={{ fontSize: "35px", color: "black" }}><b>ยืนยันคำขอ</b></p>
+                    </div>
+                    <div className="box-body regular-th">
+                        <div style={{ backgroundColor: "#ebfbe7", padding: '8px 10px 8px 20px' }}>
+                            <i className="icon fa fa-warning"></i>&nbsp;&nbsp;
+                            <span style={{ fontSize: "20px" }}>
+                                <b>การดำเนินการนี้จะยืนยันการขอรับ&nbsp;
+                                <span style={{ fontSize: "25px" }}>'น้ำสะอาดเพื่ออุปโภคบริโภค'</span>
+                                </b>
+                            </span>
+                        </div>
+                        <br />
+                        ชื่อ-นามสกุล : <b style={{ fontSize: "25px" }}>{this.state.name}&nbsp;&nbsp;{this.state.lastname}</b>
+                        <br />
+                        ที่อยู่ : <b style={{ fontSize: "25px" }}>{this.state.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+                        <br /><br />
+                        <Row>
+                            <Col md="7">
+                                <p style={{ fontSize: '17px' }}>รอการติดต่อกลับจากเจ้าหน้าที่ภายใน 3-4 วัน<br />หรือต่อต่อ&nbsp;075-204-625</p>
+                            </Col>
+                            <Col md="5">
+                                <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeModal}>
+                                    <span style={{ fontSize: '25px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
+                                </Button>
+                                &nbsp;&nbsp;
+                                <Button
+                                    color="success"
+                                    className="regular-th"
+                                    style={{ borderRadius: '12px' }}
+                                    onClick={() => { this.addToDatabase(this.newValue) }}>
+                                    <span style={{ fontSize: '25px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
+                                </Button>
+                            </Col>
+                        </Row>
+                    </div>
+                </Modal>
             </div>
         )
     }

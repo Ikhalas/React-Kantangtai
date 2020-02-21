@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'THSarabunNew';
-  src: url('../thaiFonts/THSarabunNew.ttf');
+  src: url('../fonts/THSarabunNew.ttf');
 }
 
 @font-face {
   font-family: 'THSarabunNewBold';
-  src: url('../thaiFonts/THSarabunNewBold.ttf');
+  src: url('../fonts/THSarabunNewBold.ttf');
 }
 
 .regular-th {

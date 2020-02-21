@@ -6,6 +6,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "chart.js": "2.8.0",
+    "firebase": "^7.9.0",
     "google-maps-react": "^2.0.2",
     "history": "4.9.0",
     "node-sass": "4.12.0",
@@ -15,6 +16,7 @@
     "react-dom": "16.8.6",
     "react-google-maps": "9.4.5",
     "react-input-mask": "^2.0.4",
+    "react-modal": "^3.11.1",
     "react-notification-alert": "0.0.12",
     "react-router": "5.0.0",
     "react-router-dom": "5.0.0",
