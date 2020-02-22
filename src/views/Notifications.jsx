@@ -1,290 +1,383 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-/*eslint-disable*/
 import React from "react";
-// react plugin for creating notifications over the dashboard
-import NotificationAlert from "react-notification-alert";
-// reactstrap components
+import Modal from 'react-modal';
+import { db } from '../assets/config/firebase'
 import {
-  UncontrolledAlert,
-  Alert,
-  Button,
   Card,
   CardHeader,
   CardBody,
   CardTitle,
+  Table,
   Row,
-  Col
+  Col,
+  Button
 } from "reactstrap";
 
+const modalStyles = {
+  content: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f9f9f9',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    borderRadius: '25px',
+    zIndex: 2000,
+    width: '600px',
+    height: '600px'
+
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 2000
+  },
+};
+
+const ComfirmModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: '#f9f9f9',
+    borderStyle: 'solid',
+    borderWidth: '1px',
+    borderRadius: '25px',
+    zIndex: 2000,
+    width: '600px'
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 2000
+  },
+};
+
 class Notifications extends React.Component {
-  state = {
-    visible: true
-  };
-  notificationAlert = React.createRef();
-  notify(place) {
-    var color = Math.floor(Math.random() * 5 + 1);
-    var type;
-    switch (color) {
-      case 1:
-        type = "primary";
-        break;
-      case 2:
-        type = "success";
-        break;
-      case 3:
-        type = "danger";
-        break;
-      case 4:
-        type = "warning";
-        break;
-      case 5:
-        type = "info";
-        break;
-      default:
-        break;
+  constructor(props) {
+    super(props)
+    this.state = {
+      requests: [],
+      modalIsOpen: false,
+      confirmModal: false,
+      detailToModal: '',
+      detailToConfirmModal: ''
     }
-    var options = {};
-    options = {
-      place: place,
-      message: (
-        <div>
-          <div>
-            Welcome to <b>Paper Dashboard React</b> - a beautiful freebie for
-            every web developer.
-          </div>
-        </div>
-      ),
-      type: type,
-      icon: "nc-icon nc-bell-55",
-      autoDismiss: 7
-    };
-    this.notificationAlert.current.notificationAlert(options);
+    this._isMounted = false
+
+    this.closeModal = this.closeModal.bind(this)
+    this.openModal = this.openModal.bind(this)
+
+    this.closeConfirmModal = this.closeConfirmModal.bind(this)
+    this.openConfirmModal = this.openConfirmModal.bind(this)
   }
+
+  componentDidMount() {
+    this._isMounted = true
+    this._isMounted && this.getData();
+  }
+
+  getData() {
+    db.collection('requests').orderBy('No').get().then(snapshot => {
+      let requests = []
+      snapshot.forEach(doc => {
+        //let data = doc.data()
+        requests.push(doc.data())
+      })
+      this._isMounted && this.setState({ requests })
+      //console.log(this.state.requests)
+    }).catch(error => console.log(error))
+  }
+
+  generateRequestsRows() {
+    const requests = this.state.requests
+
+    const filtered = requests.filter((request) => {
+      return request.status === false
+    })
+    return (
+      filtered && filtered.map(fil => (
+        <tr key={fil.id}>
+          <td>#{fil.No}</td>
+          <td>{fil.name}&nbsp;{fil.lastname}</td>
+          <td>{this.statusLabel(fil.status, fil)}</td>
+          <td className="text-right">{this.proceedLabel(fil.status, fil)}&nbsp;&nbsp;</td>
+        </tr>
+      ))
+    )
+  }
+
+  statusLabel(status, detail) {
+    if (status === false) {
+      return (
+        <Button
+          className="regular-th"
+          style={{ fontSize: '20px', fontWeight: 'normal', width: '150px' }}
+          size="sm"
+          outline
+          color="info"
+          onClick={() => this.openModal(detail)}
+        >ดูรายละเอียด
+        </Button>
+      )
+    } else return null
+  }
+
+  proceedLabel(status, detail) {
+    if (status === false) {
+      return (
+        <Button
+          className="regular-th"
+          style={{ fontSize: '20px', fontWeight: 'normal', width: '250px' }}
+          size="sm"
+          outline
+          color="success"
+          onClick={() => this.openConfirmModal(detail)}
+        ><i className="nc-icon nc-check-2"></i>&nbsp;ทำเครื่องหมายว่าดำเนินการเสร็จสิ้น
+        </Button>
+      )
+    } else return null
+  }
+
+  updateToDatabase(requestNo) {
+    //console.log(requestNo)
+    let id = ''
+    const newData = {
+      status: true,
+      successful: this.getCurrentDate()
+    }
+
+    db.collection('requests').where('No', '==', requestNo).get().then(snapshot => {
+      snapshot.forEach(doc => {
+        id = doc.id
+      })
+      //console.log(id)
+      db.collection('requests').doc(id).update(newData).then(() => {
+        window.location.reload();
+      })
+    }).catch(error => console.log(error))
+
+
+  }
+
+
+
+  getCurrentDate() {
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear() + 543;
+    return `${date}/${month < 10 ? `0${month}` : `${month}`}/${year}`
+  }
+
+  openModal(detailToModal) {
+    this.setState({ modalIsOpen: true })
+    this.setState({ detailToModal })
+    document.body.style.overflow = 'hidden'
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false })
+    document.body.style.overflow = 'unset'
+  }
+
+  openConfirmModal(detailToConfirmModal) {
+    this.setState({ confirmModal: true })
+    this.setState({ detailToConfirmModal })
+    document.body.style.overflow = 'hidden'
+  }
+
+  closeConfirmModal() {
+    this.setState({ confirmModal: false })
+    document.body.style.overflow = 'unset'
+  }
+
+  componentWillMount() {
+    Modal.setAppElement('body');
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
+    const detailToModal = this.state.detailToModal
+    const confirmDetail = this.state.detailToConfirmModal
     return (
       <>
-        <div className="content">
-          <NotificationAlert ref={this.notificationAlert} />
+        <div className="content regular-th">
           <Row>
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h5">Notifications</CardTitle>
-                  <p className="card-category">
-                    Handcrafted by our colleague{" "}
-                    <a
-                      target="_blank"
-                      href="https://www.instagram.com/manu.nazare/"
-                    >
-                      Nazare Emanuel-Ioan (Manu)
-                    </a>
-                    . Please checkout the{" "}
-                    <a
-                      href="https://github.com/creativetimofficial/react-notification-alert"
-                      target="_blank"
-                    >
-                      full documentation.
-                    </a>
-                  </p>
+                  <CardTitle tag="h4">รายการคำร้องขอทั้งหมดที่อยู่ในสถานะรอดำเนินการ</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  <Row>
-                    <Col md="6">
-                      <Card className="card-plain">
-                        <CardHeader>
-                          <CardTitle tag="h5">Notifications Style</CardTitle>
-                        </CardHeader>
-                        <CardBody>
-                          <Alert color="info">
-                            <span>This is a plain notification</span>
-                          </Alert>
-                          <UncontrolledAlert color="info" fade={false}>
-                            <span>
-                              This is a notification with close button.
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert
-                            className="alert-with-icon"
-                            color="info"
-                            fade={false}
-                          >
-                            <span
-                              data-notify="icon"
-                              className="nc-icon nc-bell-55"
-                            />
-                            <span data-notify="message">
-                              This is a notification with close button and icon.
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert
-                            className="alert-with-icon"
-                            color="info"
-                            fade={false}
-                          >
-                            <span
-                              data-notify="icon"
-                              className="nc-icon nc-chart-pie-36"
-                            />
-                            <span data-notify="message">
-                              This is a notification with close button and icon
-                              and have many lines. You can see that the icon and
-                              the close button are always vertically aligned.
-                              This is a beautiful notification. So you don't
-                              have to worry about the style.
-                            </span>
-                          </UncontrolledAlert>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                    <Col md="6">
-                      <Card className="card-plain">
-                        <CardHeader>
-                          <CardTitle tag="h5">Notification states</CardTitle>
-                        </CardHeader>
-                        <CardBody>
-                          <UncontrolledAlert color="primary" fade={false}>
-                            <span>
-                              <b>Primary - </b>
-                              This is a regular notification made with
-                              color="primary"
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert color="info" fade={false}>
-                            <span>
-                              <b>Info - </b>
-                              This is a regular notification made with
-                              color="info"
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert color="success" fade={false}>
-                            <span>
-                              <b>Success - </b>
-                              This is a regular notification made with
-                              color="success"
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert color="warning" fade={false}>
-                            <span>
-                              <b>Warning - </b>
-                              This is a regular notification made with
-                              color="warning"
-                            </span>
-                          </UncontrolledAlert>
-                          <UncontrolledAlert color="danger" fade={false}>
-                            <span>
-                              <b>Danger - </b>
-                              This is a regular notification made with
-                              color="danger"
-                            </span>
-                          </UncontrolledAlert>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="12">
-              <Card>
-                <CardBody>
-                  <div className="places-buttons">
-                    <Row>
-                      <Col className="ml-auto mr-auto text-center" md="6">
-                        <CardTitle tag="h4">Notifications Places</CardTitle>
-                        <p className="category">Click to view notifications</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="ml-auto mr-auto" lg="8">
-                        <Row>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("tl")}
-                            >
-                              Top Left
-                            </Button>
-                          </Col>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("tc")}
-                            >
-                              Top Center
-                            </Button>
-                          </Col>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("tr")}
-                            >
-                              Top Right
-                            </Button>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col className="ml-auto mr-auto" lg="8">
-                        <Row>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("bl")}
-                            >
-                              Bottom Left
-                            </Button>
-                          </Col>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("bc")}
-                            >
-                              Bottom Center
-                            </Button>
-                          </Col>
-                          <Col md="4">
-                            <Button
-                              block
-                              color="primary"
-                              onClick={() => this.notify("br")}
-                            >
-                              Bottom Right
-                            </Button>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </div>
+                  <Table responsive>
+                    <thead className="text-primary">
+                      <tr>
+                        <th style={{ fontSize: '25px' }}>คำขอลำดับที่</th>
+                        <th style={{ fontSize: '25px' }}>ชื่อ-นามสกุล</th>
+                        <th style={{ fontSize: '25px' }}>รายละเอียด</th>
+                        <th className="text-right" style={{ fontSize: '25px' }}></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.generateRequestsRows()}
+                    </tbody>
+                  </Table>
                 </CardBody>
               </Card>
             </Col>
           </Row>
         </div>
+        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
+          <div className="text-right regular-th" style={{ color: 'white' }}>
+            &copy; {1900 + new Date().getYear()}, made with{" "}&nbsp;
+            <i className="fa fa-heart heart" style={{ color: 'pink' }} />&nbsp; by IKHALAS
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+        </div>
+
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          closeTimeoutMS={500}
+          onRequestClose={this.closeModal}
+          style={modalStyles}
+          contentLabel="Detail Modal"
+        >
+          <div className="box-header with-border regular-th" style={{ width: "500px" }}>
+            <p style={{ fontSize: "35px", color: "black" }}><b>รายละเอียดคำร้องขอ</b></p>
+          </div>
+          <div className="box-body regular-th">
+            {detailToModal.status === true ?
+              <div style={{ backgroundColor: "#6bd098", padding: '8px 10px 8px 20px', color: 'white' }}>
+                <span style={{ fontSize: "25px" }}>
+                  <b>สถานะการดำเนินการ&nbsp;
+              <span style={{ fontSize: "35px" }}>ดำเนินการแล้ว</span>
+                  </b>
+                </span>
+              </div>
+              :
+              <div style={{ backgroundColor: "#fbc658", padding: '8px 10px 8px 20px', color: 'white' }}>
+                <span style={{ fontSize: "25px" }}>
+                  <b>สถานะการดำเนินการ&nbsp;
+            <span style={{ fontSize: "35px" }}>รอการดำเนินการ</span>
+                  </b>
+                </span>
+              </div>
+            }
+            <span style={{ fontWeight: "bold" }}>คำขอลำดับที่</span> : <b style={{ fontSize: "25px" }}>#{detailToModal.No}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style={{ fontWeight: "bold" }}>วันที่ยื่นคำขอ</span> : <b style={{ fontSize: "25px" }}>{detailToModal.date}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>เลขประจำตัวประชาชน</span> : <b style={{ fontSize: "25px" }}>{detailToModal.id}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+            <br />
+            <span style={{ fontWeight: "bold" }}>ชื่อ-นามสกุล</span> : <b style={{ fontSize: "25px" }}>{detailToModal.name}&nbsp;&nbsp;{detailToModal.lastname}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>เบอร์ติดต่อ</span> : <b style={{ fontSize: "25px" }}>{detailToModal.tel}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style={{ fontWeight: "bold" }}>อีเมล</span> : <b style={{ fontSize: "25px" }}>{detailToModal.email === "" ? '-' : detailToModal.email}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>รายละเอียดเพิ่มเติม</span> : <b style={{ fontSize: "25px" }}>{detailToModal.note === "" ? '-' : detailToModal.note}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <br /><br />
+            <Row>
+              <Col md="6">
+                {detailToModal.location &&
+                  <a href={'https://www.google.com/maps/search/?api=1&query=' + detailToModal.lat + ',' + detailToModal.lng} target="_blank" rel="noopener noreferrer">
+                    <Button
+                      className="regular-th btn-round"
+                      style={{ fontWeight: 'normal', fontSize: "20px" }}
+                      outline color="info"
+                      size="sm"
+                    >
+                      ตำแหน่งบน Google Map
+                </Button>
+                  </a>
+                }
+              </Col>
+              <Col md="6" style={{ textAlign: "end" }}>
+
+                <Button
+                  color="success"
+                  className="regular-th"
+                  style={{ borderRadius: '12px' }}
+                  onClick={this.closeModal}>
+                  <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ตกลง&nbsp;&nbsp;</span>
+                </Button>
+              </Col>
+            </Row>
+          </div>
+        </Modal>
+
+        <Modal
+          isOpen={this.state.confirmModal}
+          closeTimeoutMS={500}
+          onRequestClose={this.closeConfirmModal}
+          style={ComfirmModalStyles}
+          contentLabel="Success Modal"
+        >
+          <div className="box-header with-border regular-th">
+            <p style={{ fontSize: "35px", color: "black" }}><b>ดำเนินการเสร็จสิ้น</b></p>
+          </div>
+          <div className="box-body regular-th">
+            <div style={{ backgroundColor: "#6bd098", padding: '8px 10px 8px 20px', color: 'white' }}>
+              <span style={{ fontSize: "20px" }}>
+                <b>การดำเนินการนี้จะเปลี่ยนสถานะของ&nbsp;
+              <span style={{ fontSize: "25px", fontWeight: "bold" }}>"คำขอลำดับที่&nbsp;#{confirmDetail.No}"</span>
+                  &nbsp;เป็น&nbsp;
+              <span style={{ fontSize: "30px", fontWeight: "bold" }}>ดำเนินการเสร็จสิ้น</span>
+                </b>
+              </span>
+            </div>
+            <br />
+            <span style={{ fontWeight: "bold" }}>คำขอลำดับที่</span> : <b style={{ fontSize: "25px" }}>#{confirmDetail.No}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>เลขประจำตัวประชาชน</span> : <b style={{ fontSize: "25px" }}>{confirmDetail.id}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+            <br />
+            <span style={{ fontWeight: "bold" }}>ชื่อ-นามสกุล</span> : <b style={{ fontSize: "25px" }}>{confirmDetail.name}&nbsp;&nbsp;{confirmDetail.lastname}</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <br />
+            <span style={{ fontWeight: "bold" }}>วันที่ดำเนินการ</span> : <b style={{ fontSize: "25px" }}>{this.getCurrentDate()}</b>
+            <br /><br />
+            <Row>
+              <Col md="6">
+                <p style={{ fontSize: '17px' }}>สามารถตรวจสอบรายการคำร้องขอทั้งหมดได้ในหน้า "รายการทั้งหมด"</p>
+              </Col>
+              <Col md="6" style={{ textAlign: "end" }}>
+                <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeConfirmModal}>
+                  <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
+                </Button>
+                &nbsp;&nbsp;
+                                <Button
+                  color="success"
+                  className="regular-th"
+                  style={{ borderRadius: '12px' }}
+                  onClick={() => { this.updateToDatabase(confirmDetail.No) }}>
+                  <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
+                </Button>
+              </Col>
+            </Row>
+          </div>
+        </Modal>
       </>
     );
   }

@@ -71,7 +71,7 @@ class Sidebar extends React.Component {
                     activeClassName="active"
                   >
                     <i className={prop.icon} />
-                    <p className="kanit-th" style={{fontSize: '16px'}}>{prop.name}</p>
+                    <p className="regular-th" style={{fontSize: '23px'}}>{prop.name}</p>
                   </NavLink>
                 </li>
               );

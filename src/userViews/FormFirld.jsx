@@ -153,7 +153,8 @@ class FormFirld extends React.Component {
             "lng": this.currentPosition.lng,
             "date": this.getCurrentDate(),
             "note": this.state.note,
-            "status": false
+            "status": false,
+            "successful": ''
         }
 
         //console.log(this.state.nameCheck)
@@ -260,7 +261,7 @@ class FormFirld extends React.Component {
         var lng = position.lng()
         this.currentPosition = { lat: lat, lng: lng }
 
-        console.log(this.currentPosition)
+        //console.log(this.currentPosition)
     }
 
     onMouseoverMarker = (props, marker, e) => {

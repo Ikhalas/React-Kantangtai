@@ -5,10 +5,6 @@ import Credit from './Credit'
 import '../assets/demo/home.css'
 
 export default class Home extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-    
     componentDidMount() {
         window.addEventListener("scroll", this.resizeHeaderOnScroll);
     }

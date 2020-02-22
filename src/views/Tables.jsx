@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from 'react-router-dom'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
 import {
@@ -26,7 +25,8 @@ const modalStyles = {
     borderStyle: 'solid',
     borderWidth: '1px',
     borderRadius: '25px',
-    zIndex: 2000
+    zIndex: 2000,
+    width: '600px',
 
   },
   overlay: {
@@ -46,7 +46,7 @@ class Tables extends React.Component {
     this.state = {
       requests: [],
       modalIsOpen: false,
-      detailToMadal: ''
+      detailToModal: ''
     }
     this._isMounted = false
 
@@ -107,17 +107,17 @@ class Tables extends React.Component {
           outline
           color="success"
           onClick={() => this.openModal(detail)}
-        >ดำเนินการแล้ว
+        >ดำเนินการเสร็จสิ้น
         </Button>
       )
     } else return null
   }
 
-  openModal(detailToMadal) {
-    console.log(detailToMadal)
+  openModal(detailToModal) {
+    //console.log(detailToModal)
     this.setState({ modalIsOpen: true })
-    this.setState({ detailToMadal })
-    console.log("state" + this.state.detailToMadal.name)
+    this.setState({ detailToModal })
+    //console.log("state" + this.state.detailToModal.name)
     document.body.style.overflow = 'hidden'
   }
 
@@ -135,7 +135,7 @@ class Tables extends React.Component {
   }
 
   render() {
-    const detailToMadal = this.state.detailToMadal
+    const detailToModal = this.state.detailToModal
     return (
       <>
         <div className="content regular-th">
@@ -180,11 +180,11 @@ class Tables extends React.Component {
           contentLabel="Confirm Modal"
         >
 
-          <div className="box-header with-border regular-th" style={{ width: "500px" }}>
+          <div className="box-header with-border regular-th">
             <p style={{ fontSize: "35px", color: "black" }}><b>รายละเอียดคำร้อง</b></p>
           </div>
           <div className="box-body regular-th">
-            {detailToMadal.status === true ?
+            {detailToModal.status === true ?
               <div style={{ backgroundColor: "#6bd098", padding: '8px 10px 8px 20px', color: 'white' }}>
                 <span style={{ fontSize: "25px" }}>
                   <b>สถานะการดำเนินการ&nbsp;
@@ -202,24 +202,34 @@ class Tables extends React.Component {
               </div>
             }
 
-            คำขอลำดับที่ : <b style={{ fontSize: "25px" }}>#{detailToMadal.No}</b>
+            <span style={{ fontWeight: "bold" }}>คำขอลำดับที่</span> : <b style={{ fontSize: "25px" }}>#{detailToModal.No}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style={{ fontWeight: "bold" }}>วันที่ยื่นคำขอ</span> : <b style={{ fontSize: "25px" }}>{detailToModal.date}</b>
             <br />
-            เลขประจำตัวประชาชน : <b style={{ fontSize: "25px" }}>{detailToMadal.id}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style={{ fontWeight: "bold" }}>เลขประจำตัวประชาชน</span> : <b style={{ fontSize: "25px" }}>{detailToModal.id}</b>&nbsp;&nbsp;&nbsp;&nbsp;
             <br />
-            ชื่อ-นามสกุล : <b style={{ fontSize: "25px" }}>{detailToMadal.name}&nbsp;&nbsp;{detailToMadal.lastname}</b>
+            <span style={{ fontWeight: "bold" }}>ชื่อ-นามสกุล</span> : <b style={{ fontSize: "25px" }}>{detailToModal.name}&nbsp;&nbsp;{detailToModal.lastname}</b>
             <br />
-            เบอร์ติดต่อ : <b style={{ fontSize: "25px" }}>{detailToMadal.tel}</b>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            อีเมล : <b style={{ fontSize: "25px" }}>{detailToMadal.email === "" ? '-' : detailToMadal.email}</b>
+            <span style={{ fontWeight: "bold" }}>เบอร์ติดต่อ</span> : <b style={{ fontSize: "25px" }}>{detailToModal.tel}</b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style={{ fontWeight: "bold" }}>อีเมล</span> : <b style={{ fontSize: "25px" }}>{detailToModal.email === "" ? '-' : detailToModal.email}</b>
             <br />
-            รายละเอียดเพิ่มเติม : <b style={{ fontSize: "25px" }}>{detailToMadal.note === "" ? '-' : detailToMadal.note}</b>
+            <span style={{ fontWeight: "bold" }}>รายละเอียดเพิ่มเติม</span> : <b style={{ fontSize: "25px" }}>{detailToModal.note === "" ? '-' : detailToModal.note}</b>
             <br />
-            ที่อยู่ : <b style={{ fontSize: "25px", fontWeight: 'bold' }}>{detailToMadal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <br />
+            {detailToModal.status === true ? 
+            <>
+            <span style={{ fontWeight: "bold" }}>วันที่ดำเนินการ </span> : <b style={{ fontSize: "25px" }}>{detailToModal.successful}</b>
+            </>
+            : null
+            
+            }
             <br /><br />
             <Row>
               <Col md="6">
-                {detailToMadal.location &&
-                  <a href={'https://www.google.com/maps/search/?api=1&query=' + detailToMadal.lat +',' + detailToMadal.lng} target="_blank" rel="noopener noreferrer">
+                {detailToModal.location &&
+                  <a href={'https://www.google.com/maps/search/?api=1&query=' + detailToModal.lat + ',' + detailToModal.lng} target="_blank" rel="noopener noreferrer">
                     <Button
                       className="regular-th btn-round"
                       style={{ fontWeight: 'normal', fontSize: "20px" }}

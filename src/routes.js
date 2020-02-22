@@ -17,7 +17,7 @@ var routes = [
   },
   {
     path: "/notifications",
-    name: "รายการคำขอ",
+    name: "คำขอที่ยังไม่ดำเนินการ",
     icon: "nc-icon nc-bell-55",
     component: Notifications,
     layout: "/admin"
@@ -46,7 +46,7 @@ var routes = [
   {
     path: "/user-page",
     name: "จัดการสิทธิ์เข้าใช้ระบบ",
-    icon: "nc-icon nc-single-02",
+    icon: "nc-icon nc-badge",
     component: UserPage,
     layout: "/admin"
   },
