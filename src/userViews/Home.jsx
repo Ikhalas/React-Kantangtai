@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React from "react";
 import Header from './Header'
 import FormFirld from './FormFirld'
 import Credit from './Credit'
@@ -7,12 +7,10 @@ import '../assets/demo/home.css'
 export default class Home extends React.Component {
     constructor(props) {
         super(props)
-        this.scrollDiv = createRef();
     }
     
     componentDidMount() {
         window.addEventListener("scroll", this.resizeHeaderOnScroll);
-        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
     }
     resizeHeaderOnScroll() {
         const distanceY = window.pageYOffset || document.documentElement.scrollTop,
@@ -27,7 +25,7 @@ export default class Home extends React.Component {
     }
     render() {
         return (
-            <div id="wrapper" ref={this.scrollDiv}>
+            <div id="wrapper">
                 <Header/>
                 <div id="main" className="regular-th">
                     <div id="content">

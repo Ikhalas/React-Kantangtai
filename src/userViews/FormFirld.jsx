@@ -140,7 +140,6 @@ class FormFirld extends React.Component {
             this.setState({ telCheck: false })
         }
 
-
         this.newValue = {
             "No": Number(this.state.requests.length) + 1,
             "name": this.state.name,

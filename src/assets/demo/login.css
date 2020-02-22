@@ -27,6 +27,7 @@ body{ background: #f4f3ef; }
 .title{
   color: #606060;
   margin-top: 40px;
+  font-weight: normal;
 }
 
 .label{ 

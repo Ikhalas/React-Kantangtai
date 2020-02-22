@@ -51,6 +51,13 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/icons",
+    name: "Icons",
+    icon: "nc-icon nc-diamond",
+    component: Icons,
+    layout: "/admin"
+  },
+  {
     pro: true,
     path: "/upgrade",
     name: "ออกจากระบบ",
