@@ -66,6 +66,9 @@ class FormFirld extends React.Component {
             tel: '',
             email: '',
             address: '',
+            moo: '',
+            soi: '',
+            road: '',
             note: '',
             toggleMap: false,
             markers: [{
@@ -75,6 +78,7 @@ class FormFirld extends React.Component {
             nameCheck: '',
             lastnameCheck: '',
             addressCheck: '',
+            mooCheck: '',
             idCheck: '',
             telCheck: '',
             modalIsOpen: false,
@@ -132,6 +136,10 @@ class FormFirld extends React.Component {
             this.setState({ addressCheck: false })
         }
 
+        if (this.state.moo.length === 0) {
+            this.setState({ mooCheck: false })
+        }
+
         if (this.state.id.length === 0) {
             this.setState({ idCheck: false })
         }
@@ -148,6 +156,9 @@ class FormFirld extends React.Component {
             "tel": this.state.tel,
             "email": this.state.email,
             "address": this.state.address,
+            "moo": Number(this.state.moo),
+            "soi": this.state.soi,
+            "road": this.state.road,
             "location": this.state.toggleMap,
             "lat": this.currentPosition.lat,
             "lng": this.currentPosition.lng,
@@ -163,7 +174,7 @@ class FormFirld extends React.Component {
         //console.log(this.state.idCheck)
         //console.log(this.state.telCheck)
 
-        if (this.state.nameCheck && this.state.lastnameCheck && this.state.addressCheck && this.state.idCheck && this.state.telCheck) {
+        if (this.state.nameCheck && this.state.lastnameCheck && this.state.addressCheck && this.state.mooCheck && this.state.idCheck && this.state.telCheck) {
             //console.log(this.newValue)
             this.openModal(e)
 
@@ -227,6 +238,16 @@ class FormFirld extends React.Component {
             this.setState({ addressCheck: false })
         } else {
             this.setState({ addressCheck: true })
+        }
+    }
+
+    onMooChange = (e) => {
+        this.setState({ moo: e.target.value })
+        //console.log(e.target.value)
+        if (e.target.value.length === 0) {
+            this.setState({ mooCheck: false })
+        } else {
+            this.setState({ mooCheck: true })
         }
     }
 
@@ -414,9 +435,9 @@ class FormFirld extends React.Component {
                                     </Col>
                                 </Row>
                                 <Row>
-                                    <Col md="12">
+                                    <Col md="3">
                                         <FormGroup>
-                                            <label style={{ fontSize: "23px", color: "black" }}>ที่อยู่</label>
+                                            <label style={{ fontSize: "23px", color: "black" }}>บ้านเลขที่</label>
                                             <Input
                                                 className="regular-th"
                                                 style={{ fontSize: "23px" }}
@@ -433,9 +454,56 @@ class FormFirld extends React.Component {
                                             : null
                                         }
                                     </Col>
+
+                                    <Col md="3">
+                                        <FormGroup>
+                                            <label style={{ fontSize: "23px", color: "black" }}>หมู่</label>
+                                            <Input
+                                                className="regular-th"
+                                                style={{ fontSize: "23px" }}
+                                                type="number"
+                                                onKeyDown={(e)=> {return e.keyCode !== 69}}
+                                                name="moo"
+                                                onChange={this.onMooChange.bind(this)}
+
+                                            />
+                                        </FormGroup>
+                                        {this.state.mooCheck === false ?
+                                            <span style={{ fontSize: '18px', color: 'red' }}>
+                                                <i className="nc-icon nc-alert-circle-i" style={{ fontSize: "14px" }}></i>
+                                                &nbsp;กรุณากรอกที่อยู่ของท่านให้ครบถ้วน</span>
+                                            : null
+                                        }
+                                    </Col>
+                                    <Col md="3">
+                                        <FormGroup>
+                                            <label style={{ fontSize: "23px", color: "black" }}>ซอย (ถ้ามี)</label>
+                                            <Input
+                                                className="regular-th"
+                                                style={{ fontSize: "23px" }}
+                                                type="text"
+                                                name="soi"
+                                                onChange={e => this.setState({ soi: e.target.value })}
+
+                                            />
+                                        </FormGroup>
+                                    </Col>
+                                    <Col md="3">
+                                        <FormGroup>
+                                            <label style={{ fontSize: "23px", color: "black" }}>ถนน (ถ้ามี)</label>
+                                            <Input
+                                                className="regular-th"
+                                                style={{ fontSize: "23px" }}
+                                                type="text"
+                                                name="road"
+                                                onChange={e => this.setState({ road: e.target.value })}
+
+                                            />
+                                        </FormGroup>
+                                    </Col>
                                 </Row>
                                 <Row>
-                                    <Col className="pr-1" md="4" sm="12">
+                                    <Col className="pr-1" md="4">
                                         <FormGroup>
                                             <label style={{ fontSize: "23px", color: "black" }}>ตำบล</label>
                                             <Input
@@ -447,7 +515,7 @@ class FormFirld extends React.Component {
                                             />
                                         </FormGroup>
                                     </Col>
-                                    <Col className="px-1" md="4" sm="12">
+                                    <Col className="px-1" md="4">
                                         <FormGroup>
                                             <label style={{ fontSize: "23px", color: "black" }}>อำเภอ</label>
                                             <Input
@@ -482,7 +550,7 @@ class FormFirld extends React.Component {
                                                 size="sm"
                                                 onClick={() => this.setState({ toggleMap: !this.state.toggleMap })}
                                             >
-                                                {this.state.toggleMap === false ? "ระบุที่อยู่เพิ่มเติมบน Google Map" : "ปิด Google Map"}
+                                                {this.state.toggleMap === false ? "ระบุที่อยู่เพิ่มเติมบน Google Maps" : "ปิด Google Maps"}
                                             </Button>
                                         </div>
                                     </Col>
@@ -492,7 +560,7 @@ class FormFirld extends React.Component {
                                     <Row>
                                         <Col md="12">
                                             <label style={{ fontSize: "23px", color: "black" }}>
-                                                ระบุตำแหน่งที่อยู่ของท่านบน Google Map
+                                                ระบุตำแหน่งที่อยู่ของท่านบน Google Maps
                                                 <p style={{ fontSize: "20px" }}>" โดยการเลื่อน<span style={{ color: '#fd5559' }}><i className="nc-icon nc-pin-3"></i>หมุดสีแดง</span> ให้ตรงกับบริเวณบ้านของท่าน เพื่อความสะดวกของเจ้าหน้าที่ในการค้นหาตำแหน่งที่อยู่ของท่าน "</p>
                                             </label>
                                             <Map
@@ -596,13 +664,23 @@ class FormFirld extends React.Component {
                         <br />
                         ชื่อ-นามสกุล : <b style={{ fontSize: "25px" }}>{this.state.name}&nbsp;&nbsp;{this.state.lastname}</b>
                         <br />
-                        ที่อยู่ : <b style={{ fontSize: "25px" }}>{this.state.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+                        ที่อยู่ : <b style={{ fontSize: "20px" }}>
+                            บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{this.state.address}</b>&nbsp;
+                            หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{this.state.moo}</b>&nbsp;&nbsp;
+                            {this.state.soi === '' ? null :
+                            <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{this.state.soi}</b>&nbsp;&nbsp;</span>
+                            }
+                            {this.state.road === '' ? null :
+                            <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{this.state.road}</b>&nbsp;&nbsp;</span>
+                            }
+                            ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง</b>
                         <br /><br />
                         <Row>
-                            <Col md="6">
-                                <p style={{ fontSize: '17px' }}>รอการประสานงานจากเจ้าหน้าที่ภายใน 3-4 วัน</p>
+                            <Col md="5">
+                                <br/>
+                                <p style={{ fontSize: '20px', lineHeight: '100%' }}>รอการประสานงานจากเจ้าหน้าที่ภายใน 3-4 วัน</p> 
                             </Col>
-                            <Col md="6" style={{ textAlign: "end" }}>
+                            <Col md="7" style={{ textAlign: "end" }}>
                                 <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeModal}>
                                     <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
                                 </Button>

@@ -152,7 +152,7 @@ class Tables extends React.Component {
                         <th style={{ fontSize: '25px' }}>คำขอลำดับที่</th>
                         <th style={{ fontSize: '25px' }}>ชื่อ-นามสกุล</th>
                         <th style={{ fontSize: '25px' }}>ที่อยู่</th>
-                        <th className="text-right" style={{ fontSize: '25px', PaddingRight: '10px' }}>สถานะ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th className="text-right" style={{ fontSize: '25px', PaddingRight: '10px' }}>สถานะะ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -188,7 +188,7 @@ class Tables extends React.Component {
               <div style={{ backgroundColor: "#6bd098", padding: '8px 10px 8px 20px', color: 'white' }}>
                 <span style={{ fontSize: "25px" }}>
                   <b>สถานะการดำเนินการ&nbsp;
-              <span style={{ fontSize: "35px" }}>ดำเนินการแล้ว</span>
+              <span style={{ fontSize: "35px" }}>ดำเนินการเสร็จสิ้น</span>
                   </b>
                 </span>
               </div>
@@ -216,7 +216,18 @@ class Tables extends React.Component {
             <br />
             <span style={{ fontWeight: "bold" }}>รายละเอียดเพิ่มเติม</span> : <b style={{ fontSize: "25px" }}>{detailToModal.note === "" ? '-' : detailToModal.note}</b>
             <br />
-            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : &nbsp;
+            <b style={{ fontSize: "20px" }}>
+              บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.address}</b>&nbsp;
+              หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.moo}</b>&nbsp;&nbsp;
+              {detailToModal.soi === '' ? null :
+                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
+              }
+              {detailToModal.road === '' ? null :
+                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
+              }
+              ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
+            </b>
             <br />
             {detailToModal.status === true ? 
             <>

@@ -171,11 +171,7 @@ class Notifications extends React.Component {
         window.location.reload();
       })
     }).catch(error => console.log(error))
-
-
   }
-
-
 
   getCurrentDate() {
     let newDate = new Date()
@@ -296,7 +292,18 @@ class Notifications extends React.Component {
             <br />
             <span style={{ fontWeight: "bold" }}>รายละเอียดเพิ่มเติม</span> : <b style={{ fontSize: "25px" }}>{detailToModal.note === "" ? '-' : detailToModal.note}</b>
             <br />
-            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : &nbsp;
+            <b style={{ fontSize: "20px" }}>
+              บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.address}</b>&nbsp;
+              หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.moo}</b>&nbsp;&nbsp;
+              {detailToModal.soi === '' ? null :
+                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
+              }
+              {detailToModal.road === '' ? null :
+                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
+              }
+              ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
+            </b>
             <br /><br />
             <Row>
               <Col md="6">
@@ -354,13 +361,26 @@ class Notifications extends React.Component {
             <br />
             <span style={{ fontWeight: "bold" }}>ชื่อ-นามสกุล</span> : <b style={{ fontSize: "25px" }}>{confirmDetail.name}&nbsp;&nbsp;{confirmDetail.lastname}</b>
             <br />
-            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : <b style={{ fontSize: "25px" }}>{detailToModal.address}&nbsp;ต.กันตังใต้&nbsp;อ.กันตัง&nbsp;จ.ตรัง</b>
+            <span style={{ fontWeight: "bold" }}>ที่อยู่</span> : &nbsp;
+            <b style={{ fontSize: "20px" }}>
+              บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.address}</b>&nbsp;
+              หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.moo}</b>&nbsp;&nbsp;
+              {confirmDetail.soi === '' ? null :
+                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.soi}</b>&nbsp;&nbsp;</span>
+              }
+              {confirmDetail.road === '' ? null :
+                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.road}</b>&nbsp;&nbsp;</span>
+              }
+              ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
+            </b>
+
+
             <br />
             <span style={{ fontWeight: "bold" }}>วันที่ดำเนินการ</span> : <b style={{ fontSize: "25px" }}>{this.getCurrentDate()}</b>
             <br /><br />
             <Row>
               <Col md="6">
-                <p style={{ fontSize: '17px' }}>สามารถตรวจสอบรายการคำร้องขอทั้งหมดได้ในหน้า "รายการทั้งหมด"</p>
+                <p style={{ fontSize: '20px', lineHeight:'100%' }}>สามารถตรวจสอบรายการคำร้องขอทั้งหมดได้ในหน้า "รายการทั้งหมด"</p>
               </Col>
               <Col md="6" style={{ textAlign: "end" }}>
                 <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeConfirmModal}>

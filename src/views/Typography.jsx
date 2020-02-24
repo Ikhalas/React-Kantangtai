@@ -1,155 +1,266 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
+import { db } from '../assets/config/firebase'
+import { Card, CardHeader, CardBody, Row, Col, Button, Table, TabContent, TabPane, Nav, NavItem, NavLink, CardTitle, CardText,  } from "reactstrap";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+import classnames from 'classnames';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
-// reactstrap components
-import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
+pdfMake.fonts = {
+  THSarabunNew: {
+    normal: 'THSarabunNew.ttf',
+    bold: 'THSarabunNew-Bold.ttf',
+    italics: 'THSarabunNew-Italic.ttf',
+    bolditalics: 'THSarabunNew-BoldItalic.ttf'
+  },
+  Roboto: {
+    normal: 'Roboto-Regular.ttf',
+    bold: 'Roboto-Medium.ttf',
+    italics: 'Roboto-Italic.ttf',
+    bolditalics: 'Roboto-MediumItalic.ttf'
+  }
+}
+
+const buttonGroupStyle = {
+  fontWeight: 'normal',
+  fontSize: "20px",
+  width: '150px'
+}
 
 class Typography extends React.Component {
+
+  constructor() {
+    super();
+    this.state = {
+      requests: [],
+      subHeader: '',
+      activeTab: '1'
+
+    }
+    this._isMounted = false
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+    this._isMounted && this.getData();
+  }
+
+  toggleTab = tab => {
+      if(this.state.activeTab !== tab) this.setState({activeTab:tab});
+  }
+
+  getData() {
+    db.collection('requests').orderBy('No').get().then(snapshot => {
+      let requests = []
+      snapshot.forEach(doc => {
+        //let data = doc.data()
+        requests.push(doc.data())
+      })
+      this._isMounted && this.setState({ requests })
+      //console.log(this.state.requests)
+    }).catch(error => console.log(error))
+  }
+
+  generateFalseStatus = () => {
+    const requests = this.state.requests
+
+    let filtered = requests.filter((request) => {
+      return request.status === false
+    })
+
+    console.log("false |" + filtered)
+  }
+
+  generateTrueStatus() {
+    const requests = this.state.requests
+
+    let filtered = requests.filter((request) => {
+      return request.status === false
+    })
+
+    console.log("true |" + filtered)
+    return (
+      filtered && filtered.map(fil => (
+        <tr key={fil.id}>
+          <td>#{fil.No}</td>
+          <td>{fil.name}&nbsp;{fil.lastname}</td>
+          <td>{this.statusLabel(fil.status, fil)}</td>
+          <td className="text-right">{this.proceedLabel(fil.status, fil)}&nbsp;&nbsp;</td>
+        </tr>
+      ))
+    )
+  }
+
+  printPDF() {
+    var docDefinition = {
+      content: [
+        { text: 'รายงานสรุปผลการดำเนินงาน', style: 'header' },
+        { text: 'A simple table with nested elements', style: 'subheader' },
+      ],
+      defaultStyle: {
+        font: 'THSarabunNew'
+      }
+    };
+    pdfMake.createPdf(docDefinition).download()
+
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+
   render() {
+    const activeTab = this.state.activeTab
     return (
       <>
-        <div className="content">
+        <div className="content regular-th">
+        <div>
+      <Nav tabs>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '1' })}
+            onClick={() => { this.toggleTab('1'); }}
+            style={{color:'black'}}
+          >
+            รายการทั้งหมด
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '2' })}
+            onClick={() => { this.toggleTab('2'); }}
+          >
+            Tab2
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: activeTab === '3' })}
+            onClick={() => { this.toggleTab('3'); }}
+          >
+            Tab3
+          </NavLink>
+        </NavItem>
+      </Nav>
+
+
+      <TabContent activeTab={activeTab}>
+        <TabPane tabId="1">
+          <Row>
+            <Col sm="12">
+              <h4>Tab 1 Contents</h4>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="2">
+          <Row>
+            <Col sm="12">
+              <h4>Tab 2 Contents</h4>
+            </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="3">
+          <Row>
+            <Col sm="12">
+              <h4>Tab 3 Contents</h4>
+            </Col>
+          </Row>
+        </TabPane>
+      </TabContent>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <Row>
             <Col md="12">
               <Card>
+                <Row>
+                  <Col md="3" >
+                    <h5 className="title regular-th" style={{ fontSize: "30px" }}>รายงานสรุปผลการดำเนินงาน</h5>
+                  </Col>
+                  <Col md="9">
+                    <div className='text-right' style={{ paddingRight: '10px', paddingTop: '10px'  }}>
+                      <Button onClick={this.printPDF} className="regular-th" style={buttonGroupStyle} outline color="primary">รายการทั้งหมด</Button>{' '}
+                      <Button onClick={() => { this.generateFalseStatus() }} className="regular-th" style={buttonGroupStyle} outline color="warning">รอการดำเนินการ</Button>{' '}
+                      <Button onClick={() => { this.generateTrueStatus() }} className="regular-th" style={buttonGroupStyle} outline color="success">ดำเนินการเสร็จสิ้น</Button>
+                    </div>
+                  </Col>
+                </Row>
                 <CardHeader>
-                  <h5 className="title">Paper Table Heading</h5>
-                  <p className="category">
-                    Created using Montserrat Font Family
-                  </p>
+
                 </CardHeader>
-                <CardBody>
-                  <div className="typography-line">
-                    <h1>
-                      <span>Header 1</span>
-                      The Life of Paper Dashboard
-                    </h1>
-                  </div>
-                  <div className="typography-line">
-                    <h2>
-                      <span>Header 2</span>
-                      The Life of Paper Dashboard
-                    </h2>
-                  </div>
-                  <div className="typography-line">
-                    <h3>
-                      <span>Header 3</span>
-                      The Life of Paper Dashboard
-                    </h3>
-                  </div>
-                  <div className="typography-line">
-                    <h4>
-                      <span>Header 4</span>
-                      The Life of Paper Dashboard
-                    </h4>
-                  </div>
-                  <div className="typography-line">
-                    <h5>
-                      <span>Header 5</span>
-                      The Life of Paper Dashboard
-                    </h5>
-                  </div>
-                  <div className="typography-line">
-                    <h6>
-                      <span>Header 6</span>
-                      The Life of Paper Dashboard
-                    </h6>
-                  </div>
-                  <div className="typography-line">
-                    <p>
-                      <span>Paragraph</span>I will be the leader of a company
-                      that ends up being worth billions of dollars, because I
-                      got the answers. I understand culture. I am the nucleus. I
-                      think that’s a responsibility that I have, to push
-                      possibilities, to show people, this is the level that
-                      things could be at.
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Quote</span>
-                    <blockquote>
-                      <p className="blockquote blockquote-primary">
-                        "I will be the leader of a company that ends up being
-                        worth billions of dollars, because I got the answers. I
-                        understand culture. I am the nucleus. I think that’s a
-                        responsibility that I have, to push possibilities, to
-                        show people, this is the level that things could be at."{" "}
-                        <br />
-                        <br />
-                        <small>- Noaa</small>
-                      </p>
-                    </blockquote>
-                  </div>
-                  <div className="typography-line">
-                    <span>Muted Text</span>
-                    <p className="text-muted">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Primary Text</span>
-                    <p className="text-primary">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Info Text</span>
-                    <p className="text-info">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Success Text</span>
-                    <p className="text-success">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Warning Text</span>
-                    <p className="text-warning">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <span>Danger Text</span>
-                    <p className="text-danger">
-                      I will be the leader of a company that ends up being worth
-                      billions of dollars, because I got the answers...
-                    </p>
-                  </div>
-                  <div className="typography-line">
-                    <h2>
-                      <span>Small Tag</span>
-                      Header with small subtitle <br />
-                      <small>Use "small" tag for the headers</small>
-                    </h2>
-                  </div>
+                <CardBody style={{ textAlign: "center", height: '400px' }}>
+                  <Table responsive>
+                    <thead className="text-primary">
+                      <tr>
+                        <th style={{ fontSize: '25px' }}>#</th>
+                        <th style={{ fontSize: '25px' }}>ชื่อ-นามสกุล</th>
+                        <th style={{ fontSize: '25px' }}>ที่อยู่</th>
+                        <th style={{ fontSize: '25px' }}>สถานะการดำเนินงาน</th>
+                        <th className="text-right" style={{ fontSize: '25px' }}>วันที่ดำเนินการะ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                  </Table>
+                  <Button
+                    className="regular-th btn-round"
+                    style={{ fontWeight: 'normal', fontSize: "25px" }}
+                    outline color="info"
+                    size="sm"
+                    onClick={this.printPDF}
+                  >
+                    <i className="nc-icon nc-cloud-download-93" style={{ fontSize: "40px" }}></i><br />
+                    ดาวน์โหลดไฟล์ PDF
+                  </Button>
+
                 </CardBody>
               </Card>
             </Col>
           </Row>
+        </div>
+        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
+          <div className="text-right regular-th" style={{ color: 'white' }}>
+            &copy; {1900 + new Date().getYear()}, made with{" "}
+            <i className="fa fa-heart heart" /> by IKHALAS
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
         </div>
       </>
     );
