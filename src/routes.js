@@ -50,7 +50,7 @@ var routes = [
     component: UserPage,
     layout: "/admin"
   },
-  
+  /*
   {
     path: "/icons",
     name: "Icons",
@@ -58,7 +58,7 @@ var routes = [
     component: Icons,
     layout: "/admin"
   },
-  
+  */
   {
     pro: true,
     path: "/Logout",

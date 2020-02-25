@@ -5,6 +5,7 @@ import { Card, CardBody, Row, Col, Button, Table, } from "reactstrap";
 import Loader from 'react-loader-spinner'
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { isMobile } from "react-device-detect";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 pdfMake.fonts = {
@@ -50,6 +51,9 @@ class Typography extends React.Component {
   }
 
   componentDidMount() {
+    if (isMobile) {
+      alert("ปรับอุปกรณ์ของท่านเป็นแนวนอน เพื่อแสดงตารางให้ชัดเจนและครบถ้วน")
+    }
     this._isMounted = true
     this._isMounted && this.getData();
   }

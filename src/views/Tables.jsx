@@ -2,6 +2,7 @@ import React from "react";
 import Myfooter from './Myfooter'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
+import { isMobile } from "react-device-detect";
 import {
   Card,
   CardHeader,
@@ -56,6 +57,9 @@ class Tables extends React.Component {
   }
 
   componentDidMount() {
+    if (isMobile) {
+      alert("ปรับอุปกรณ์ของท่านเป็นแนวนอน เพื่อแสดงตารางให้ชัดเจนและครบถ้วน")
+    }
     this._isMounted = true
     this._isMounted && this.getData();
   }
