@@ -9,11 +9,11 @@
 # production
 /build
 /.firebase
-.firebase.json
-.firebaserc
+firebase.json
+firebaserc
 
 #key
-/src/assets/config
+/src/assets/config/firebase.js
 
 # misc
 .DS_Store
