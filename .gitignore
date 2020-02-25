@@ -13,7 +13,7 @@ firebase.json
 firebaserc
 
 #key
-/src/assets/config/firebase.js
+/src/assets/config
 
 # misc
 .DS_Store

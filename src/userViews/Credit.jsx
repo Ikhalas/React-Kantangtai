@@ -42,9 +42,9 @@ export default class Credit extends React.Component {
                     </div>
                     <div id="copy">
                         &#xa9; ออกแบบและพัฒนาโดย{" "}
-                        <a href="https://www.facebook.com/iinut.kantangtaicassic" target="_blank" rel="noopener noreferrer">นายกันตภณ จำนงค์ทอง</a>{" "}
+                        <a style={{fontSize:'25px'}} href="https://www.facebook.com/iinut.kantangtaicassic" target="_blank" rel="noopener noreferrer">นายกันตภณ จำนงค์ทอง</a>{" "}
                         2019 - 2020
-                        <p style={{fontSize:"30px"}}>นักศึกษาระดับ ปวส.2 สาขาคอมพิวเตอร์ธุรกิจ วิทยาลัยอาชีวศึกษาโปลีเทคนิคตรัง</p>
+                        <p className="college">นักศึกษาระดับ ปวส.2 สาขาคอมพิวเตอร์ธุรกิจ วิทยาลัยอาชีวศึกษาโปลีเทคนิคตรัง</p>
                     </div>
                 </div>
             </footer>

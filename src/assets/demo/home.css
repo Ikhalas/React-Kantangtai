@@ -261,7 +261,7 @@ footer ul li {
     }
     
     
-
+	/*สีกรม ตอนยุบ*/
 	header.smaller {
 		height: 80px;
 	}
@@ -311,6 +311,68 @@ footer ul li {
 		display: block;
 	}
 }
+
+/* ##Device = Most of the Smartphones Mobiles (Portrait) */
+@media (min-width: 320px) and (max-width: 480px) {
+	.college {
+		font-size: 25px;
+	}
+	/*blue small*/
+	header.smaller {
+		height: 100px;
+	}
+	/*red smaller */
+	header.smaller h1#logo {
+		height: 50px;
+	}
+}
+
+/* ##Device = Most of the Smartphones Mobiles (landscape) */
+@media (min-width: 730px) and (max-width: 812px) {
+	/*red big */
+	header h1#logo {
+		height: 125px;
+	}
+	/*red smaller */
+	header.smaller h1#logo {
+		height: 60px;
+	}
+	/*blue big*/
+	header {
+		height: 180px;
+	}
+	/*blue small*/
+	header.smaller {
+		height: 110px;
+	}
+	
+}
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+	.college {
+		font-size: 30px;
+	}
+  }
+
+/* 
+	##Device = Laptops, Desktops
+	##Screen = B/w 1025px to 1280px
+*/
+@media (min-width: 1025px) and (max-width: 1280px) {
+	.college {
+		font-size: 30px;
+	}
+}
+
+
+
+
+
 
 .ReactModal__Overlay {
     opacity: 0;
