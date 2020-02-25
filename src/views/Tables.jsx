@@ -149,7 +149,7 @@ class Tables extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">รายการคำร้องขอทั้งหมด</CardTitle>
+                  <CardTitle tag="h4" style={{color:'#66615b'}}>รายการคำร้องขอทั้งหมด</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Table responsive>

@@ -329,7 +329,8 @@ class FormFirld extends React.Component {
                 <Col md="12">
                     <Card className="card-user">
                         <CardHeader>
-                            <CardTitle tag="h3">แบบฟอร์มขอรับน้ำสะอาดเพื่ออุปโภคและบริโภค</CardTitle>
+                            <CardTitle tag="h3" style={{color:'#66615b'}}>แบบฟอร์มขอรับน้ำสะอาดเพื่ออุปโภคและบริโภค</CardTitle>
+                            <hr/>
                         </CardHeader>
                         <CardBody>
                             <Form onSubmit={this.onFormSubmit.bind(this)} id="form">

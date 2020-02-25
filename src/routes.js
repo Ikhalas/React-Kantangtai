@@ -1,6 +1,6 @@
 import Dashboard from "views/Dashboard.jsx";
 import Notifications from "views/Notifications.jsx";
-//import Icons from "views/Icons.jsx";
+import Icons from "views/Icons.jsx";
 import Typography from "views/Typography.jsx";
 import TableList from "views/Tables.jsx";
 import Maps from "views/Map.jsx";
@@ -18,7 +18,7 @@ var routes = [
   {
     path: "/notifications",
     name: "คำขอที่ยังไม่ดำเนินการ",
-    icon: "nc-icon nc-bell-55",
+    icon: "nc-icon nc-paper",
     component: Notifications,
     layout: "/admin"
   },
@@ -50,7 +50,7 @@ var routes = [
     component: UserPage,
     layout: "/admin"
   },
-  /*
+  
   {
     path: "/icons",
     name: "Icons",
@@ -58,7 +58,7 @@ var routes = [
     component: Icons,
     layout: "/admin"
   },
-  */
+  
   {
     pro: true,
     path: "/Logout",

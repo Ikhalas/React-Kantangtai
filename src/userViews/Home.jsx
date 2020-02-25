@@ -27,8 +27,10 @@ export default class Home extends React.Component {
                     <div id="content">
                         <section>
                             <div className="container">
-                                <h1>อธิบายรายละเอียด บราๆๆๆ ....</h1>
+                                <h2 style={{color:'#66615b'}}>ยื่นคำร้องขอรับน้ำสะอาดเพื่อการอุปโภค-บริโภค</h2>
+                                
                                 <p>
+                                    <span style={{fontSize:'25px', fontWeight:'bold'}}>รายละเอียดและเงื่อนไข</span> <br/>
                                     Aww, it's true. I've been hiding it for so long. Perhaps, but
                                     perhaps your civilization is merely the sewer of an even
                                     greater society above you! You guys go on without me! I'm

@@ -1,55 +1,139 @@
 import React from "react";
 import Myfooter from './Myfooter'
+import { Link } from 'react-router-dom'
+import { db } from '../assets/config/firebase'
 // react plugin used to create charts
-//import { Line, Pie } from "react-chartjs-2";
+import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
 import {
-  /*Card,
+  Card,
   CardHeader,
   CardBody,
   CardFooter,
-  CardTitle,*/
+  CardTitle,
   Row,
   Col
 } from "reactstrap";
 // core components
-/*import {
-  dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
-  dashboardNASDAQChart
-} from "variables/charts.jsx";*/
+import { dashboardEmailStatisticsChart } from "variables/charts.jsx";
 
 class Dashboard extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      requests: [],
+
+    }
+    this._isMounted = false
+    this._chart = ''
+
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+    this._isMounted && this.getData();
+
+  }
+
+  getData() {
+    db.collection('requests').orderBy('No').get().then(snapshot => {
+      let requests = []
+      snapshot.forEach(doc => {
+        //let data = doc.data()
+        requests.push(doc.data())
+      })
+      this._isMounted && this.setState({ requests })
+      //console.log(this.state.requests)
+    }).catch(error => console.log(error))
+  }
+
+  getTotalList() {
+    return this.state.requests.length
+  }
+
+  getTotalYellow() {
+    let filtered = this.state.requests.filter((request) => {
+      return request.status === false
+    })
+
+    return filtered.length
+  }
+
+  getTotalUser() {
+
+  }
+
+  getMoo() {
+    const requests = this.state.requests
+
+    let moo1 = requests.filter((request) => {
+      return request.moo === 1
+    })
+
+    let moo2 = requests.filter((request) => {
+      return request.moo === 2
+    })
+
+    let moo3 = requests.filter((request) => {
+      return request.moo === 3
+    })
+
+    let moo4 = requests.filter((request) => {
+      return request.moo === 4
+    })
+
+    let moo5 = requests.filter((request) => {
+      return request.moo === 5
+    })
+
+    let moo6 = requests.filter((request) => {
+      return request.moo === 6
+    })
+
+    this._chart = {
+      data: canvas => {
+        return {
+          labels: ['หมู่ที่ 1', 'หมู่ที่ 2', 'หมู่ที่ 3', 'หมู่ที่ 4', 'หมู่ที่ 5', 'หมู่ที่ 6'],
+          datasets: [
+            {
+              label: "Emails",
+              pointRadius: 0,
+              pointHoverRadius: 0,
+              backgroundColor: ["#e171e8", "#4acccd", "#fcc468", "#ef8157", "pink", "#71b37c"],
+              borderWidth: 0,
+              data: [moo1.length, moo2.length, moo3.length, moo4.length, moo5.length, moo6.length]
+            }
+          ]
+        };
+      }
+    };
+
+
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   render() {
+    this.getMoo()
     return (
       <>
         <div className="content regular-th">
           <Row>
-            <Col md="12">
-              <div style={{ textAlign: 'center' }}>
-                <br /><br /><br /><br />
-                <h1 style={{ color: "black" }}>กำลังอยู่ในขั้นตอนการพัฒนา</h1>
-                <i className="nc-icon nc-settings" style={{ fontSize: "80px", color: "black" }}></i>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        {/* 
-        <div className="content">
-          <Row>
-            <Col lg="3" md="6" sm="6">
+            <Col lg="4" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-globe text-warning" />
+                        <i className="nc-icon nc-bullet-list-67 text-info" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Capacity</p>
-                        <CardTitle tag="p">150GB</CardTitle>
+                        <p style={{ fontSize: '20px' }} className="card-category">รายการทั้งหมด</p>
+                        <CardTitle tag="p">{this.getTotalList()} รายการ</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -58,24 +142,57 @@ class Dashboard extends React.Component {
                 <CardFooter>
                   <hr />
                   <div className="stats">
-                    <i className="fas fa-sync-alt" /> Update Now
+                    &nbsp;<i className="fas fa-info" /> &nbsp;
+                    <Link to='/admin/tables'>
+                      <span style={{ color: '#66615b' }}>ดูรายการทั้งหมด</span>
+                    </Link>
+                  </div>
+                </CardFooter>
+
+              </Card>
+            </Col>
+            <Col lg="4" md="6" sm="6">
+              <Card className="card-stats">
+                <CardBody>
+                  <Row>
+                    <Col md="4" xs="5">
+                      <div className="icon-big text-center icon-warning">
+                        <i className="nc-icon nc-paper text-warning" />
+                      </div>
+                    </Col>
+                    <Col md="8" xs="7">
+                      <div className="numbers">
+                        <p style={{ fontSize: '20px' }} className="card-category">คำขอที่ยังไม่ดำเนินการ</p>
+                        <CardTitle tag="p">{this.getTotalYellow()} รายการ</CardTitle>
+                        <p />
+                      </div>
+                    </Col>
+                  </Row>
+                </CardBody>
+                <CardFooter>
+                  <hr />
+                  <div className="stats">
+                    &nbsp;<i className="fas fa-info" /> &nbsp;
+                    <Link to='/admin/notifications'>
+                      <span style={{ color: '#66615b' }}>ดำเนินการ</span>
+                    </Link>
                   </div>
                 </CardFooter>
               </Card>
             </Col>
-            <Col lg="3" md="6" sm="6">
+            <Col lg="4" md="6" sm="6">
               <Card className="card-stats">
                 <CardBody>
                   <Row>
                     <Col md="4" xs="5">
                       <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-money-coins text-success" />
+                        <i className="nc-icon nc-single-02 text-primary" />
                       </div>
                     </Col>
                     <Col md="8" xs="7">
                       <div className="numbers">
-                        <p className="card-category">Revenue</p>
-                        <CardTitle tag="p">$ 1,345</CardTitle>
+                        <p style={{ fontSize: '20px' }} className="card-category">บัญชีผู้มีสิทธิ์ใช้งานระบบ</p>
+                        <CardTitle tag="p">xxx บัญชี</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -84,144 +201,58 @@ class Dashboard extends React.Component {
                 <CardFooter>
                   <hr />
                   <div className="stats">
-                    <i className="far fa-calendar" /> Last day
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col lg="3" md="6" sm="6">
-              <Card className="card-stats">
-                <CardBody>
-                  <Row>
-                    <Col md="4" xs="5">
-                      <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-vector text-danger" />
-                      </div>
-                    </Col>
-                    <Col md="8" xs="7">
-                      <div className="numbers">
-                        <p className="card-category">Errors</p>
-                        <CardTitle tag="p">23</CardTitle>
-                        <p />
-                      </div>
-                    </Col>
-                  </Row>
-                </CardBody>
-                <CardFooter>
-                  <hr />
-                  <div className="stats">
-                    <i className="far fa-clock" /> In the last hour
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col lg="3" md="6" sm="6">
-              <Card className="card-stats">
-                <CardBody>
-                  <Row>
-                    <Col md="4" xs="5">
-                      <div className="icon-big text-center icon-warning">
-                        <i className="nc-icon nc-favourite-28 text-primary" />
-                      </div>
-                    </Col>
-                    <Col md="8" xs="7">
-                      <div className="numbers">
-                        <p className="card-category">Followers</p>
-                        <CardTitle tag="p">+45K</CardTitle>
-                        <p />
-                      </div>
-                    </Col>
-                  </Row>
-                </CardBody>
-                <CardFooter>
-                  <hr />
-                  <div className="stats">
-                    <i className="fas fa-sync-alt" /> Update now
+                    &nbsp;<i className="fas fa-info" /> &nbsp;
+                    <Link to='/admin/user-page'>
+                      <span style={{ color: '#66615b' }}>จัดการบัญชีผู้ใช้</span>
+                    </Link>
                   </div>
                 </CardFooter>
               </Card>
             </Col>
           </Row>
+
           <Row>
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h5">Users Behavior</CardTitle>
-                  <p className="card-category">24 Hours performance</p>
-                </CardHeader>
-                <CardBody>
-                  <Line
-                    data={dashboard24HoursPerformanceChart.data}
-                    options={dashboard24HoursPerformanceChart.options}
-                    width={400}
-                    height={100}
-                  />
-                </CardBody>
-                <CardFooter>
-                  <hr />
-                  <div className="stats">
-                    <i className="fa fa-history" /> Updated 3 minutes ago
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md="4">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h5">Email Statistics</CardTitle>
-                  <p className="card-category">Last Campaign Performance</p>
+                  <CardTitle tag="h5" style={{ color: 'black' }}>
+                    สถิติหมู่บ้านที่ยื่นคำขอ
+                    </CardTitle>
+                  <p className="card-category">จากหมู่บ้านทั้งหมด 6 หมู่</p>
                 </CardHeader>
                 <CardBody>
                   <Pie
-                    data={dashboardEmailStatisticsChart.data}
+                    data={this._chart.data}
                     options={dashboardEmailStatisticsChart.options}
                   />
                 </CardBody>
                 <CardFooter>
-                  <div className="legend">
-                    <i className="fa fa-circle text-primary" /> Opened{" "}
-                    <i className="fa fa-circle text-warning" /> Read{" "}
-                    <i className="fa fa-circle text-danger" /> Deleted{" "}
-                    <i className="fa fa-circle text-gray" /> Unopened
+                  <div className="legend text-right" style={{ paddingRight: '10px', fontSize: '25px' }}>
+                    <Row>
+                      <Col lg="12" md="12" sm="12">
+                        <i className="fa fa-circle" style={{ color: "#e171e8" }} /> หมู่ที่ 1{" "}&nbsp;
+                    <i className="fa fa-circle text-primary" /> หมู่ที่ 2{" "}&nbsp;
+                    <i className="fa fa-circle text-warning" /> หมู่ที่ 3{" "}
+                      </Col>
+                      <Col lg="12" md="12" sm="12">
+                        <i className="fa fa-circle text-danger" /> หมู่ที่ 4{" "}&nbsp;
+                    <i className="fa fa-circle" style={{ color: "pink" }} /> หมู่ที่ 5{" "}&nbsp;
+                    <i className="fa fa-circle" style={{ color: "#71b37c" }} /> หมู่ที่ 6
+                    </Col>
+                    </Row>
                   </div>
                   <hr />
                   <div className="stats">
-                    <i className="fa fa-calendar" /> Number of emails sent
-                  </div>
-                </CardFooter>
-              </Card>
-            </Col>
-            <Col md="8">
-              <Card className="card-chart">
-                <CardHeader>
-                  <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                  <p className="card-category">Line Chart with Points</p>
-                </CardHeader>
-                <CardBody>
-                  <Line
-                    data={dashboardNASDAQChart.data}
-                    options={dashboardNASDAQChart.options}
-                    width={400}
-                    height={100}
-                  />
-                </CardBody>
-                <CardFooter>
-                  <div className="chart-legend">
-                    <i className="fa fa-circle text-info" /> Tesla Model S{" "}
-                    <i className="fa fa-circle text-warning" /> BMW 5 Series
-                  </div>
-                  <hr />
-                  <div className="card-stats">
-                    <i className="fa fa-check" /> Data information certified
+                    <i className="fa fa-map-marker-alt" /> ตำบลกันตังใต้ อำเภอกันตัง จังหวัดตรัง
                   </div>
                 </CardFooter>
               </Card>
             </Col>
           </Row>
+          
+          
         </div>
-        */}
+
 
         <Myfooter />
       </>
