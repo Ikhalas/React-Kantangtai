@@ -1,22 +1,5 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
+import Myfooter from './Myfooter'
 // react plugin used to create google maps
 import {
   withScriptjs,
@@ -199,13 +182,8 @@ class Map extends React.Component {
             </Col>
           </Row>
         </div>
-        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
-          <div className="text-right regular-th" style={{ color: 'white' }}>
-            &copy; {1900 + new Date().getYear()}, made with{" "}
-            <i className="fa fa-heart heart" /> by IKHALAS
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </div>
-        </div>
+    
+        <Myfooter/>
       </>
     );
   }

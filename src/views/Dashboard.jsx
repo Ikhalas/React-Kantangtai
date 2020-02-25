@@ -1,4 +1,5 @@
 import React from "react";
+import Myfooter from './Myfooter'
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
@@ -209,13 +210,7 @@ class Dashboard extends React.Component {
           </Row>
         </div>
         
-        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
-          <div className="text-right regular-th" style={{ color: 'white' }}>
-            &copy; {1900 + new Date().getYear()}, made with{" "}
-            <i className="fa fa-heart heart" /> by IKHALAS
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </div>
-        </div>
+        <Myfooter/>
       </>
     );
   }

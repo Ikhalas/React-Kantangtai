@@ -10,8 +10,8 @@ import UpgradeToPro from "views/Upgrade.jsx";
 var routes = [
   {
     path: "/dashboard",
-    name: "หน้าหลัก",
-    icon: "nc-icon nc-bank",
+    name: "ภาพรวมโครงการ",
+    icon: "nc-icon nc-chart-bar-32",
     component: Dashboard,
     layout: "/admin"
   },
@@ -25,7 +25,7 @@ var routes = [
   {
     path: "/tables",
     name: "รายการทั้งหมด",
-    icon: "nc-icon nc-tile-56",
+    icon: "nc-icon nc-bullet-list-67",
     component: TableList,
     layout: "/admin"
   },
@@ -38,8 +38,8 @@ var routes = [
   },
   {
     path: "/typography",
-    name: "รายงานสรุปผล",
-    icon: "nc-icon nc-caps-small",
+    name: "จัดทำเอกสาร",
+    icon: "nc-icon nc-single-copy-04",
     component: Typography,
     layout: "/admin"
   },

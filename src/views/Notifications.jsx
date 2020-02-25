@@ -1,4 +1,5 @@
 import React from "react";
+import Myfooter from './Myfooter'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
 import {
@@ -242,13 +243,6 @@ class Notifications extends React.Component {
             </Col>
           </Row>
         </div>
-        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
-          <div className="text-right regular-th" style={{ color: 'white' }}>
-            &copy; {1900 + new Date().getYear()}, made with{" "}&nbsp;
-            <i className="fa fa-heart heart" style={{ color: 'pink' }} />&nbsp; by IKHALAS
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </div>
-        </div>
 
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -297,10 +291,10 @@ class Notifications extends React.Component {
               บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.address}</b>&nbsp;
               หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.moo}</b>&nbsp;&nbsp;
               {detailToModal.soi === '' ? null :
-                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
+                <span>ซอย<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
               }
               {detailToModal.road === '' ? null :
-                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
+                <span>ถนน<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
               }
               ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
             </b>
@@ -366,10 +360,10 @@ class Notifications extends React.Component {
               บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.address}</b>&nbsp;
               หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.moo}</b>&nbsp;&nbsp;
               {confirmDetail.soi === '' ? null :
-                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.soi}</b>&nbsp;&nbsp;</span>
+                <span>ซอย<b style={{ fontSize: "25px" }}>{confirmDetail.soi}</b>&nbsp;&nbsp;</span>
               }
               {confirmDetail.road === '' ? null :
-                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{confirmDetail.road}</b>&nbsp;&nbsp;</span>
+                <span>ถนน<b style={{ fontSize: "25px" }}>{confirmDetail.road}</b>&nbsp;&nbsp;</span>
               }
               ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
             </b>
@@ -398,6 +392,7 @@ class Notifications extends React.Component {
             </Row>
           </div>
         </Modal>
+        <Myfooter/>
       </>
     );
   }

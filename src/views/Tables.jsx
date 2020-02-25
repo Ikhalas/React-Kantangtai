@@ -1,4 +1,5 @@
 import React from "react";
+import Myfooter from './Myfooter'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
 import {
@@ -78,7 +79,12 @@ class Tables extends React.Component {
         <tr key={req.id}>
           <td>#{req.data().No}</td>
           <td>{req.data().name}&nbsp;{req.data().lastname}</td>
-          <td>{req.data().address}</td>
+          <td>
+            {req.data().address}&nbsp;&nbsp;
+            หมู่ที่&nbsp;{req.data().moo}&nbsp;&nbsp;
+            {req.data().soi === "" ? null : <span>ซอย{req.data().soi}</span>}&nbsp;&nbsp;
+            {req.data().road === "" ? null : <span>ถนน{req.data().road}</span>}
+          </td>
           <td className="text-right">{this.statusLabel(req.data().status, req.data())}&nbsp;&nbsp;</td>
         </tr>
       ))
@@ -164,14 +170,7 @@ class Tables extends React.Component {
             </Col>
           </Row>
         </div>
-        <div style={{ width: '100%', height: '50px', backgroundColor: '#3c3c3c' }} >
-          <div className="text-right regular-th" style={{ color: 'white' }}>
-            &copy; {1900 + new Date().getYear()}, made with{" "}
-            <i className="fa fa-heart heart" /> by IKHALAS
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          </div>
-        </div>
-
+        
         <Modal
           isOpen={this.state.modalIsOpen}
           closeTimeoutMS={500}
@@ -221,10 +220,10 @@ class Tables extends React.Component {
               บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.address}</b>&nbsp;
               หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.moo}</b>&nbsp;&nbsp;
               {detailToModal.soi === '' ? null :
-                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
+                <span>ซอย<b style={{ fontSize: "25px" }}>{detailToModal.soi}</b>&nbsp;&nbsp;</span>
               }
               {detailToModal.road === '' ? null :
-                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
+                <span>ถนน<b style={{ fontSize: "25px" }}>{detailToModal.road}</b>&nbsp;&nbsp;</span>
               }
               ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง
             </b>
@@ -265,6 +264,7 @@ class Tables extends React.Component {
             </Row>
           </div>
         </Modal>
+        <Myfooter/>
       </>
     );
   }
