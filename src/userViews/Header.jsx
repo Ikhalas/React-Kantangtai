@@ -1,6 +1,6 @@
 import React from "react";
-import '../assets/demo/home.css'
 import { Link } from 'react-router-dom';
+import 'assets/demo/home.css'
 
 export default class Header extends React.Component {
     render() {

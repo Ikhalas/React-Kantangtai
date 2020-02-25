@@ -15,7 +15,7 @@ export default class Logout extends React.Component {
         <div className="content regular-th">
           <Row>
             <Col md="12" style={{ height: "300%", textAlign: 'center' }}>
-
+              <br/>
               <div style={{marginTop:'100px', fontSize:'25px'}}>
               <p>ท่านต้องการออกจากระบบหรือไม่ ?</p>
                 <Button

@@ -8,6 +8,12 @@
 
 # production
 /build
+/.firebase
+.firebase.json
+.firebaserc
+
+#key
+/src/assets/config
 
 # misc
 .DS_Store

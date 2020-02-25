@@ -1,5 +1,3 @@
-//animations
-
 .icon-property{
     @include transition($slow-transition-time, $transition-bezier);
     position: relative;

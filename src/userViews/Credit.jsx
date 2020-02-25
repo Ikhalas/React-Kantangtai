@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import '../assets/demo/home.css'
+import 'assets/demo/home.css'
 
 export default class Credit extends React.Component {
     render() {

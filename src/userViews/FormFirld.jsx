@@ -1,5 +1,5 @@
 import React, { createRef } from "react";
-import '../assets/demo/home.css'
+import 'assets/demo/home.css'
 import { db } from '../assets/config/firebase'
 import Modal from 'react-modal';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
@@ -51,7 +51,7 @@ const spinner = {
     left: '50%',
     right: 'auto',
     bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
+    transform: 'translate(-50%, -50%)',  
 }
 
 
@@ -82,6 +82,7 @@ class FormFirld extends React.Component {
             idCheck: '',
             telCheck: '',
             modalIsOpen: false,
+            buttonEnable: false
         }
         this._isMounted = false
         this._isLoaded = 'no'
@@ -186,6 +187,7 @@ class FormFirld extends React.Component {
     }
 
     addToDatabase(newValue) {
+        this.setState({ buttonEnable: true })
         this._isLoaded = 'loading'
         //console.log(this._isLoaded)
         if (this._isLoaded === 'loading') {
@@ -641,12 +643,12 @@ class FormFirld extends React.Component {
                             <Loader
                                 type="Oval"
                                 color="#2f9e00"
-                                height={150}
-                                width={150}
+                                height={100}
+                                width={100}
                             />
                         </div>
                         : null
-                     }
+                    }
 
                     <div className="box-header with-border regular-th">
                         <p style={{ fontSize: "35px", color: "black" }}><b>ยืนยันคำขอ</b></p>
@@ -669,35 +671,56 @@ class FormFirld extends React.Component {
                             บ้านเลขที่&nbsp;<b style={{ fontSize: "25px" }}>{this.state.address}</b>&nbsp;
                             หมู่ที่&nbsp;<b style={{ fontSize: "25px" }}>{this.state.moo}</b>&nbsp;&nbsp;
                             {this.state.soi === '' ? null :
-                            <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{this.state.soi}</b>&nbsp;&nbsp;</span>
+                                <span>ซอย&nbsp;<b style={{ fontSize: "25px" }}>{this.state.soi}</b>&nbsp;&nbsp;</span>
                             }
                             {this.state.road === '' ? null :
-                            <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{this.state.road}</b>&nbsp;&nbsp;</span>
+                                <span>ถนน&nbsp;<b style={{ fontSize: "25px" }}>{this.state.road}</b>&nbsp;&nbsp;</span>
                             }
                             ต.กันตังใต้&nbsp;&nbsp;อ.กันตัง&nbsp;&nbsp;จ.ตรัง</b>
                         <br /><br />
                         <Row>
                             <Col md="5">
-                                <br/>
-                                <p style={{ fontSize: '20px', lineHeight: '100%' }}>รอการประสานงานจากเจ้าหน้าที่ภายใน 3-4 วัน</p> 
+                                <br />
+                                <p style={{ fontSize: '20px', lineHeight: '100%' }}>รอการประสานงานจากเจ้าหน้าที่ภายใน 3-4 วัน</p>
                             </Col>
                             <Col md="7" style={{ textAlign: "end" }}>
-                                <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeModal}>
-                                    <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
-                                </Button>
-                                &nbsp;&nbsp;
-                                <Button
-                                    color="success"
-                                    className="regular-th"
-                                    style={{ borderRadius: '12px' }}
-                                    onClick={() => { this.addToDatabase(this.newValue) }}>
-                                    <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
-                                </Button>
+
+                                {this.state.buttonEnable === false ?
+                                    <>
+                                        <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }} onClick={this.closeModal}>
+                                            <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
+                                        </Button>
+                                        &nbsp;&nbsp;
+                                        <Button
+                                            color="success"
+                                            className="regular-th"
+                                            style={{ borderRadius: '12px' }}
+                                            onClick={() => { this.addToDatabase(this.newValue) }}>
+                                            <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
+                                        </Button>
+                                    </>
+                                    :
+                                    <>
+                                        <Button className="regular-th" outline color="secondary" style={{ borderRadius: '12px' }}>
+                                            <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยกเลิก&nbsp;&nbsp;</span>
+                                        </Button>
+                                        &nbsp;&nbsp;
+                                        <Button
+                                            color="success"
+                                            className="regular-th"
+                                            style={{ borderRadius: '12px' }}                                     
+                                        >
+                                            <span style={{ fontSize: '20px', fontWeight: 'normal' }}>&nbsp;&nbsp;ยืนยัน&nbsp;&nbsp;</span>
+                                        </Button>
+                                    </>
+
+                                }
+
                             </Col>
                         </Row>
                     </div>
-                </Modal>
-            </div>
+                </Modal >
+            </div >
         )
     }
 }

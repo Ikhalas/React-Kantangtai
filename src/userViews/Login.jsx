@@ -1,5 +1,5 @@
 import React from "react";
-import '../assets/demo/login.css'
+import 'assets/demo/login.css'
 import { Link, withRouter } from 'react-router-dom'
 
 class Login extends React.Component {
@@ -24,8 +24,8 @@ class Login extends React.Component {
                     <div className="form">
                         <form>
                             <h1 className="label">ลงชื่อเข้าใช้</h1>
-                            <input type="text" className="user" placeholder="Username" autoComplete="off" />
-                            <input type="password" className="pass" placeholder="Password" autoComplete="off" />
+                            <input type="text" className="user regular-th" style={{fontSize:'25px'}} placeholder="Username" autoComplete="off" />
+                            <input type="password" className="pass regular-th" style={{fontSize:'25px'}} placeholder="Password" autoComplete="off" />
                             <button 
                                 className="login regular-th" 
                                 style={{fontSize:"25px"}}

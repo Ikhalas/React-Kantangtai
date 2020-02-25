@@ -3,7 +3,7 @@ import Myfooter from './Myfooter'
 
 // reactstrap components
 import {
-  Button,
+  /*Button,
   Card,
   CardHeader,
   CardBody,
@@ -11,7 +11,7 @@ import {
   CardTitle,
   FormGroup,
   Form,
-  Input,
+  Input,*/
   Row,
   Col
 } from "reactstrap";

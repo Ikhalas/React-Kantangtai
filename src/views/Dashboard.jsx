@@ -1,23 +1,23 @@
 import React from "react";
 import Myfooter from './Myfooter'
 // react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
+//import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
 import {
-  Card,
+  /*Card,
   CardHeader,
   CardBody,
   CardFooter,
-  CardTitle,
+  CardTitle,*/
   Row,
   Col
 } from "reactstrap";
 // core components
-import {
+/*import {
   dashboard24HoursPerformanceChart,
   dashboardEmailStatisticsChart,
   dashboardNASDAQChart
-} from "variables/charts.jsx";
+} from "variables/charts.jsx";*/
 
 class Dashboard extends React.Component {
   render() {

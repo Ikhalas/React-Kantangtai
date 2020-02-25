@@ -2,7 +2,7 @@ import React from "react";
 import Header from './Header'
 import FormFirld from './FormFirld'
 import Credit from './Credit'
-import '../assets/demo/home.css'
+import 'assets/demo/home.css'
 
 export default class Home extends React.Component {
     componentDidMount() {
