@@ -158,7 +158,7 @@ class Tables extends React.Component {
                         <th style={{ fontSize: '25px' }}>คำขอลำดับที่</th>
                         <th style={{ fontSize: '25px' }}>ชื่อ-นามสกุล</th>
                         <th style={{ fontSize: '25px' }}>ที่อยู่</th>
-                        <th className="text-right" style={{ fontSize: '25px', PaddingRight: '10px' }}>สถานะะ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <th className="text-right" style={{ fontSize: '25px', PaddingRight: '10px' }}>สถานะ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                       </tr>
                     </thead>
                     <tbody>

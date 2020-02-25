@@ -14,6 +14,7 @@ import AdminLayout from "layouts/Admin.jsx";
 
 const hist = createBrowserHistory();
 
+
 ReactDOM.render(
   <Router history={hist}>
     <Switch>

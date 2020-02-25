@@ -458,11 +458,12 @@ class FormFirld extends React.Component {
                                     <Col md="3">
                                         <FormGroup>
                                             <label style={{ fontSize: "23px", color: "black" }}>หมู่</label>
-                                            <Input
+                                            <InputMask
+                                                type="text"
+                                                mask="9"
+                                                pattern="[1-6]*"
                                                 className="regular-th"
-                                                style={{ fontSize: "23px" }}
-                                                type="number"
-                                                onKeyDown={(e)=> {return e.keyCode !== 69}}
+                                                style={{ fontSize: "23px", color: '#6e6a64', width: "100%", height: '52.5px', border: '1px solid #dddddd', borderRadius: '4px', paddingLeft: '10px' }}
                                                 name="moo"
                                                 onChange={this.onMooChange.bind(this)}
 

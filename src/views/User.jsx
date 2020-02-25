@@ -20,6 +20,18 @@ class User extends React.Component {
   render() {
     return (
       <>
+        <div className="content regular-th">
+          <Row>
+            <Col md="12">
+              <div style={{ textAlign: 'center'}}>
+                <br/><br/><br/><br/>
+                <h1 style={{color:"black"}}>กำลังอยู่ในขั้นตอนการพัฒนา</h1>
+                <i className="nc-icon nc-settings" style={{ fontSize: "80px", color:"black" }}></i>
+              </div>
+            </Col>
+          </Row>
+        </div>
+        {/* 
         <div className="content">
           <Row>
             <Col md="4">
@@ -298,7 +310,9 @@ class User extends React.Component {
             </Col>
           </Row>
         </div>
+        */}
         <Myfooter/>
+        
       </>
     );
   }

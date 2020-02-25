@@ -5,7 +5,7 @@ import Typography from "views/Typography.jsx";
 import TableList from "views/Tables.jsx";
 import Maps from "views/Map.jsx";
 import UserPage from "views/User.jsx";
-import UpgradeToPro from "views/Upgrade.jsx";
+import Logout from "views/Logout.jsx";
 
 var routes = [
   {
@@ -50,6 +50,7 @@ var routes = [
     component: UserPage,
     layout: "/admin"
   },
+  /*
   {
     path: "/icons",
     name: "Icons",
@@ -57,12 +58,13 @@ var routes = [
     component: Icons,
     layout: "/admin"
   },
+  */
   {
     pro: true,
-    path: "/upgrade",
+    path: "/Logout",
     name: "ออกจากระบบ",
     icon: "nc-icon nc-user-run",
-    component: UpgradeToPro,
+    component: Logout,
     layout: "/admin"
   }
 ];
