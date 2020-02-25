@@ -16,7 +16,8 @@ import {
     Form,
     Input,
     Row,
-    Col
+    Col,
+    Collapse
 } from "reactstrap";
 
 const modalStyles = {
@@ -82,7 +83,8 @@ class FormFirld extends React.Component {
             idCheck: '',
             telCheck: '',
             modalIsOpen: false,
-            buttonEnable: false
+            buttonEnable: false,
+            isMapOpen: false
         }
         this._isMounted = false
         this._isLoaded = 'no'
@@ -277,6 +279,7 @@ class FormFirld extends React.Component {
             //console.log(this.state.telCheck)
         }
     }
+
 
     onMarkerClick = (props, marker, e) => {
         const position = marker.getPosition();
@@ -554,13 +557,13 @@ class FormFirld extends React.Component {
                                                 size="sm"
                                                 onClick={() => this.setState({ toggleMap: !this.state.toggleMap })}
                                             >
-                                                {this.state.toggleMap === false ? "ระบุที่อยู่เพิ่มเติมบน Google Maps" : "ปิด Google Maps"}
+                                                {this.state.toggleMap === false ? <><span>ระบุที่อยู่เพิ่มเติมบน Google Maps <span style={{fontSize:'20px'}}>(กดปุ่มเพื่อเปิดแผนที่)</span></span></> : "ปิด Google Maps"}
                                             </Button>
                                         </div>
                                     </Col>
                                 </Row>
 
-                                {this.state.toggleMap &&
+                                <Collapse isOpen={this.state.toggleMap}>
                                     <Row>
                                         <Col md="12">
                                             <label style={{ fontSize: "23px", color: "black" }}>
@@ -597,7 +600,7 @@ class FormFirld extends React.Component {
 
                                         </Col>
                                     </Row>
-                                }
+                                </Collapse>
 
                                 <Row>
                                     <Col md="12">

@@ -58,7 +58,7 @@ class Tables extends React.Component {
 
   componentDidMount() {
     if (isMobile) {
-      alert("ปรับอุปกรณ์ของท่านเป็นแนวนอน เพื่อแสดงตารางให้ชัดเจนและครบถ้วน")
+      alert("ปรับอุปกรณ์ของท่านเป็นแนวนอน เพื่อการแสดงตารางที่ชัดเจนและครบถ้วน")
     }
     this._isMounted = true
     this._isMounted && this.getData();

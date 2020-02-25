@@ -3,7 +3,7 @@ import Myfooter from './Myfooter'
 import { Link } from 'react-router-dom'
 import { db } from '../assets/config/firebase'
 // react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 // reactstrap components
 import {
   Card,
