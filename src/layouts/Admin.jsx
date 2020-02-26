@@ -33,7 +33,6 @@ class Dashboard extends React.Component {
       else
         this.setState({ currentUser: null })
 
-      console.log(Object(this.state.currentUser))
       if (this.state.currentUser) {
         this.props.history.push('/admin/dashboard')
       } else {

@@ -1,0 +1,11 @@
+.cardBody{
+    width: 400px;
+    text-align: center;
+}
+
+@media (min-width: 730px) and (max-width: 812px) {
+    .cardBody{
+        width: 100%;
+        text-align: center;
+    }
+}
