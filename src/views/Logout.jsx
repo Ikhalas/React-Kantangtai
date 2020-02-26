@@ -1,4 +1,5 @@
 import React from "react";
+import { auth } from '../assets/config//firebase'
 import Myfooter from './Myfooter'
 
 // reactstrap components
@@ -22,7 +23,7 @@ export default class Logout extends React.Component {
                   style={{ fontWeight: 'normal', fontSize: '30px', width: '300px' }}
                   outline color="danger"
                   size="sm"
-                  onClick={() => { this.props.history.push('/home') }}
+                  onClick={() => auth.signOut().then(res => {this.props.history.push('/login')})}
                 >
                   <i className="nc-icon nc-user-run" style={{ fontSize: "40px" }}></i><br />
                   ออกจากระบบ

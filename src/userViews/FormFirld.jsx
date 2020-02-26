@@ -557,7 +557,7 @@ class FormFirld extends React.Component {
                                                 size="sm"
                                                 onClick={() => this.setState({ toggleMap: !this.state.toggleMap })}
                                             >
-                                                {this.state.toggleMap === false ? <><span>ระบุที่อยู่เพิ่มเติมบน Google Maps <span style={{fontSize:'20px'}}>(กดปุ่มเพื่อเปิดแผนที่)</span></span></> : "ปิด Google Maps"}
+                                                {this.state.toggleMap === false ? <><span>ระบุที่อยู่เพิ่มเติมบน Google Maps <br/><span style={{fontSize:'20px'}}>(กดปุ่มเพื่อเปิดแผนที่)</span></span></> : "ปิด Google Maps"}
                                             </Button>
                                         </div>
                                     </Col>
@@ -568,7 +568,7 @@ class FormFirld extends React.Component {
                                         <Col md="12">
                                             <label style={{ fontSize: "23px", color: "black" }}>
                                                 ระบุตำแหน่งที่อยู่ของท่านบน Google Maps
-                                                <p style={{ fontSize: "20px" }}>" โดยการเลื่อน<span style={{ color: '#fd5559' }}><i className="nc-icon nc-pin-3"></i>หมุดสีแดง</span> ให้ตรงกับบริเวณบ้านของท่าน เพื่อความสะดวกของเจ้าหน้าที่ในการค้นหาตำแหน่งที่อยู่ของท่าน "</p>
+                                                <p style={{ fontSize: "20px" }}>" โดยการเลื่อน<span style={{ color: '#fd5559' }}><i className="nc-icon nc-pin-3"></i>หมุดสีแดง</span> ให้ใกล้เคียงกับบริเวณบ้านของท่าน เพื่อความสะดวกของเจ้าหน้าที่ในการค้นหาตำแหน่งที่อยู่ของท่าน "</p>
                                             </label>
                                             <Map
                                                 google={this.props.google}

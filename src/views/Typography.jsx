@@ -127,6 +127,7 @@ class Typography extends React.Component {
         {
           "#": "#" + list.No,
           "ชื่อ-นามสกุล": list.name + " " + list.lastname,
+          // eslint-disable-next-line
           "ที่อยู่": list.address + " " + "หมู่ที่ " + list.moo + " " + (list.soi === "" ? "" : "ซอย" + list.soi) + " " + (list.road === "" ? "" : "ถนน" + list.road),
           "สถานะการดำเนินงาน": list.status === true ? "ดำเนินการเสร็จสิ้น" : "รอการดำเนินการ",
           "วันที่ดำเนินการ": list.successful === "" ? "-" : list.successful

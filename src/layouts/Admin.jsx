@@ -2,6 +2,7 @@ import React from "react";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch } from "react-router-dom";
+import { auth } from '../assets/config/firebase'
 
 import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
@@ -16,7 +17,8 @@ class Dashboard extends React.Component {
     super(props);
     this.state = {
       backgroundColor: "black",
-      activeColor: "info"
+      activeColor: "info",
+      currentUser: null
     };
     this.mainPanel = React.createRef();
   }
@@ -24,8 +26,20 @@ class Dashboard extends React.Component {
     if (navigator.platform.indexOf("Win") > -1) {
       ps = new PerfectScrollbar(this.mainPanel.current);
       document.body.classList.toggle("perfect-scrollbar-on");
-      //console.log(Object.entries(this.props))
     }
+    auth.onAuthStateChanged(user => {
+      if (user)
+        this.setState({ currentUser: user })
+      else
+        this.setState({ currentUser: null })
+
+      console.log(Object(this.state.currentUser))
+      if (this.state.currentUser) {
+        this.props.history.push('/admin/dashboard')
+      } else {
+        this.props.history.push('/login')
+      }
+    })
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {

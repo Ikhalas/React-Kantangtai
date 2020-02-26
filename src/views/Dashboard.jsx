@@ -32,7 +32,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     this._isMounted = true
     this._isMounted && this.getData();
-
+    
   }
 
   getData() {
@@ -66,29 +66,12 @@ class Dashboard extends React.Component {
   getMoo() {
     const requests = this.state.requests
 
-    let moo1 = requests.filter((request) => {
-      return request.moo === 1
-    })
-
-    let moo2 = requests.filter((request) => {
-      return request.moo === 2
-    })
-
-    let moo3 = requests.filter((request) => {
-      return request.moo === 3
-    })
-
-    let moo4 = requests.filter((request) => {
-      return request.moo === 4
-    })
-
-    let moo5 = requests.filter((request) => {
-      return request.moo === 5
-    })
-
-    let moo6 = requests.filter((request) => {
-      return request.moo === 6
-    })
+    let moo1 = requests.filter(request => request.moo === 1)
+    let moo2 = requests.filter(request => request.moo === 2)
+    let moo3 = requests.filter(request => request.moo === 3)
+    let moo4 = requests.filter(request => request.moo === 4)
+    let moo5 = requests.filter(request => request.moo === 5)
+    let moo6 = requests.filter(request => request.moo === 6)
 
     this._chart = {
       data: canvas => {
@@ -210,7 +193,6 @@ class Dashboard extends React.Component {
               </Card>
             </Col>
           </Row>
-
           <Row>
             <Col md="12">
               <Card>
@@ -249,11 +231,7 @@ class Dashboard extends React.Component {
               </Card>
             </Col>
           </Row>
-          
-          
         </div>
-
-
         <Myfooter />
       </>
     );
