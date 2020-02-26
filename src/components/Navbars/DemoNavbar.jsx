@@ -1,13 +1,11 @@
 import React from "react";
 import { auth, db } from '../../assets/config/firebase'
-import { Link } from 'react-router-dom'
 import {
   Collapse,
   Navbar,
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
@@ -174,7 +172,13 @@ class Header extends React.Component {
                 navbar
                 className="justify-content-end"
               >
-
+                {
+                userDetail.role === 'admin' ? 
+                  <span className="text-info regular-th" style={{fontWeight:'bold', fontSize:'22px'}}>(Administrator)</span> 
+                : 
+                null
+                }
+                &nbsp;&nbsp;
                 <span className="regular-th">{userDetail.name}&nbsp;&nbsp;{userDetail.lastname}&nbsp;</span>
                 <Nav navbar>
                   <Dropdown

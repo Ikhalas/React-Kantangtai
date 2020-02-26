@@ -1,5 +1,4 @@
 import React from "react";
-import Myfooter from './Myfooter'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
 import { isMobile } from "react-device-detect";
@@ -399,7 +398,6 @@ class Notifications extends React.Component {
             </Row>
           </div>
         </Modal>
-        <Myfooter/>
       </>
     );
   }

@@ -1,13 +1,6 @@
 import React from "react";
 import { auth } from '../assets/config//firebase'
-import Myfooter from './Myfooter'
-
-// reactstrap components
-import {
-  Button,
-  Row,
-  Col
-} from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
 
 export default class Logout extends React.Component {
   render() {
@@ -33,7 +26,6 @@ export default class Logout extends React.Component {
             </Col>
           </Row>
         </div>
-        <Myfooter />
       </>
     );
   }

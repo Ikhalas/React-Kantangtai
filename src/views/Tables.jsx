@@ -1,5 +1,4 @@
 import React from "react";
-import Myfooter from './Myfooter'
 import Modal from 'react-modal';
 import { db } from '../assets/config/firebase'
 import { isMobile } from "react-device-detect";
@@ -48,6 +47,7 @@ class Tables extends React.Component {
     this.state = {
       requests: [],
       modalIsOpen: false,
+      currentUser: '',
       detailToModal: ''
     }
     this._isMounted = false
@@ -63,6 +63,7 @@ class Tables extends React.Component {
     this._isMounted = true
     this._isMounted && this.getData();
   }
+
 
   getData() {
     db.collection('requests').orderBy('No').get().then(snapshot => {
@@ -268,7 +269,6 @@ class Tables extends React.Component {
             </Row>
           </div>
         </Modal>
-        <Myfooter/>
       </>
     );
   }

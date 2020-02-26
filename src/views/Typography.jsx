@@ -1,5 +1,4 @@
 import React from "react";
-import Myfooter from './Myfooter'
 import { db } from '../assets/config/firebase'
 import { Card, CardBody, Row, Col, Button, Table, } from "reactstrap";
 import Loader from 'react-loader-spinner'
@@ -295,8 +294,6 @@ class Typography extends React.Component {
             </Col>
           </Row>
         </div>
-
-        <Myfooter />
       </>
     );
   }

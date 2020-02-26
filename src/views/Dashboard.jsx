@@ -1,5 +1,4 @@
 import React from "react";
-import Myfooter from './Myfooter'
 import { Link } from 'react-router-dom'
 import { db } from '../assets/config/firebase'
 // react plugin used to create charts
@@ -22,6 +21,7 @@ class Dashboard extends React.Component {
     super(props)
     this.state = {
       requests: [],
+      users: []
 
     }
     this._isMounted = false
@@ -32,6 +32,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     this._isMounted = true
     this._isMounted && this.getData();
+    this._isMounted && this.getUser();
     
   }
 
@@ -43,6 +44,18 @@ class Dashboard extends React.Component {
         requests.push(doc.data())
       })
       this._isMounted && this.setState({ requests })
+      //console.log(this.state.requests)
+    }).catch(error => console.log(error))
+  }
+
+  getUser() {
+    db.collection('users').get().then(snapshot => {
+      let users = []
+      snapshot.forEach(doc => {
+        //let data = doc.data()
+        users.push(doc.data())
+      })
+      this._isMounted && this.setState({ users })
       //console.log(this.state.requests)
     }).catch(error => console.log(error))
   }
@@ -60,7 +73,7 @@ class Dashboard extends React.Component {
   }
 
   getTotalUser() {
-
+    return this.state.users.length
   }
 
   getMoo() {
@@ -175,7 +188,7 @@ class Dashboard extends React.Component {
                     <Col md="8" xs="7">
                       <div className="numbers">
                         <p style={{ fontSize: '20px' }} className="card-category">บัญชีผู้มีสิทธิ์ใช้งานระบบ</p>
-                        <CardTitle tag="p">xxx บัญชี</CardTitle>
+                        <CardTitle tag="p">{this.getTotalUser()} บัญชี</CardTitle>
                         <p />
                       </div>
                     </Col>
@@ -232,7 +245,6 @@ class Dashboard extends React.Component {
             </Col>
           </Row>
         </div>
-        <Myfooter />
       </>
     );
   }

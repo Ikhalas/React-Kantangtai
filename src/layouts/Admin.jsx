@@ -8,6 +8,7 @@ import DemoNavbar from "components/Navbars/DemoNavbar.jsx";
 import Footer from "components/Footer/Footer.jsx";
 import Sidebar from "components/Sidebar/Sidebar.jsx";
 
+
 import routes from "routes.js";
 
 var ps;
@@ -33,11 +34,9 @@ class Dashboard extends React.Component {
       else
         this.setState({ currentUser: null })
 
-      if (this.state.currentUser) {
-        this.props.history.push('/admin/dashboard')
-      } else {
+      if (!this.state.currentUser) {
         this.props.history.push('/login')
-      }
+      } 
     })
   }
   componentWillUnmount() {
@@ -80,7 +79,7 @@ class Dashboard extends React.Component {
               );
             })}
           </Switch>
-          <Footer fluid />
+          <Footer />
         </div>
       </div>
     );

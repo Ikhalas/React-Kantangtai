@@ -1,6 +1,4 @@
 import React from "react";
-import Myfooter from './Myfooter'
-// react plugin used to create google maps
 import {
   withScriptjs,
   withGoogleMap,
@@ -182,8 +180,6 @@ class Map extends React.Component {
             </Col>
           </Row>
         </div>
-    
-        <Myfooter/>
       </>
     );
   }
