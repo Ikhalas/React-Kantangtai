@@ -46,6 +46,7 @@ export default class Credit extends React.Component {
                         2019 - 2020
                         <p className="college">นักศึกษาระดับ ปวส.2 สาขาคอมพิวเตอร์ธุรกิจ วิทยาลัยอาชีวศึกษาโปลีเทคนิคตรัง</p>
                     </div>
+                    
                 </div>
             </footer>
         )

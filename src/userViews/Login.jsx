@@ -60,7 +60,7 @@ class Login extends React.Component {
         const message = this.state.message
         return (
             <div className="full-height regular-th">
-                <h2 className="title"> องค์การบริหารส่วนตำบลกันตังใต้ อำเภอกันตัง จังหวัดตรัง </h2>
+                <h3 className="title"> องค์การบริหารส่วนตำบลกันตังใต้ อำเภอกันตัง จังหวัดตรัง </h3>
 
                 <div className="cont">
                     <div className="form">

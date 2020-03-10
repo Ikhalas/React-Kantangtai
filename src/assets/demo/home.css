@@ -319,12 +319,18 @@ footer ul li {
 	}
 	/*blue small*/
 	header.smaller {
-		height: 100px;
+		height: 125px;
 	}
 	/*red smaller */
 	header.smaller h1#logo {
 		height: 50px;
 	}
+
+	/*blue big*/
+	header {
+		height: 175px;
+	}
+
 }
 
 /* ##Device = Most of the Smartphones Mobiles (landscape) */
@@ -339,11 +345,11 @@ footer ul li {
 	}
 	/*blue big*/
 	header {
-		height: 180px;
+		height: 200px;
 	}
 	/*blue small*/
 	header.smaller {
-		height: 110px;
+		height: 135px;
 	}
 	
 }

@@ -3,8 +3,6 @@ import { auth, db } from '../assets/config/firebase'
 import { isMobile } from "react-device-detect";
 import Select from 'react-select';
 
-
-
 // reactstrap components
 import {
   Button,

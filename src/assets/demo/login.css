@@ -26,8 +26,9 @@ body{ background: #f4f3ef; }
 
 .title{
   color: #606060;
-  margin-top: 40px;
+  margin-top: 50px;
   font-weight: normal;
+  font-size: 45px
 }
 
 .label{ 
@@ -74,4 +75,6 @@ body{ background: #f4f3ef; }
 @media only screen and (min-width : 992px) {
   .cont{ width: 30% }
 }
+
+
 
