@@ -3,7 +3,7 @@ import Notifications from "views/Notifications.jsx";
 //import Icons from "views/Icons.jsx";
 import Typography from "views/Typography.jsx";
 import TableList from "views/Tables.jsx";
-import Maps from "views/Map.jsx";
+//import Maps from "views/Map.jsx";
 import UserPage from "views/User.jsx";
 import Logout from "views/Logout.jsx";
 
@@ -27,13 +27,6 @@ var routes = [
     name: "รายการทั้งหมด",
     icon: "nc-icon nc-bullet-list-67",
     component: TableList,
-    layout: "/admin"
-  },
-  {
-    path: "/maps",
-    name: "แผนที่",
-    icon: "nc-icon nc-pin-3",
-    component: Maps,
     layout: "/admin"
   },
   {

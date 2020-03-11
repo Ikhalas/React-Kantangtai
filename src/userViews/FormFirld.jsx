@@ -1,6 +1,6 @@
 import React, { createRef } from "react";
 import "assets/demo/home.css";
-import { db } from "../assets/config/firebase";
+import { db } from "../api/firebase";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import InputMask from "react-input-mask";
 
@@ -55,7 +55,6 @@ class FormFirld extends React.Component {
       telCheck: "",
       modal: false,
       buttonEnable: false,
-      isMapOpen: false
     };
     this._isMounted = false;
     this._isLoaded = "no";
@@ -719,13 +718,13 @@ class FormFirld extends React.Component {
             <Col md="7" sm="12">
               <label
                 className="px-3 pt-3"
-                style={{ fontSize: "23px", color: "black", color: "#495057" }}
+                style={{ fontSize: "23px", color: "#495057" }}
               >
                 ความเห็นหรือคำติชมของท่าน
               </label>
 
               <div
-                className="fb-comments pb-3 px-1"
+                className="fb-comments pb-3 px-1 regular-th"
                 data-href="https://developers.facebook.com/docs/plugins/comments#configurator"
                 data-width="100%"
                 data-numposts="5"
@@ -734,15 +733,15 @@ class FormFirld extends React.Component {
             <Col md="5" sm="12">
               <label
                 className="px-3 pt-3"
-                style={{ fontSize: "23px", color: "black", color: "#495057" }}
+                style={{ fontSize: "23px", color: "#495057" }}
               >
                 ขอขอบคุณ
               </label>
 
-              <div align="center">
-                <img src={require("../assets/img/poly.gif")} width="40%" />
+              <div align="center" style={{marginBottom:'10px'}}>
+                <img src={require("../assets/img/poly.gif")} width="40%" alt="poly" />
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <img src={require("../assets/img/logo.png")} width="35%" />
+                <img src={require("../assets/img/logo.png")} width="35%" alt="logo" />
               </div>
             </Col>
           </Row>

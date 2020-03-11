@@ -8,9 +8,7 @@
 
 # production
 /build
-/.firebase
-firebase.json
-firebaserc
+/src/api
 
 #key
 /src/assets/config

@@ -1,5 +1,5 @@
 import React from "react";
-import { auth } from '../assets/config//firebase'
+import { auth } from '../api/firebase'
 import { Button, Row, Col } from "reactstrap";
 
 export default class Logout extends React.Component {
